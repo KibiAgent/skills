@@ -1,3 +1,8 @@
+---
+name: kibibot
+description: Create tokens on-chain, check LLM balance/quota, and interact with KibiBot's Agent API and LLM Gateway. Use when asked to create a token via KibiBot, check KibiBot LLM credit balance, check daily token creation quota, or make LLM calls through KibiBot's gateway.
+---
+
 # KibiBot Skill
 
 Create tokens on-chain, earn trading fees, and use KibiBot's LLM Gateway — all from natural language commands.
