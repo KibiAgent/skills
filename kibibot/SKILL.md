@@ -292,7 +292,7 @@ Response:
 
 ---
 
-### GET /balance/llm
+### GET /balance/credits
 Get Kibi Credit balance and agent reload configuration.
 
 Response:
@@ -313,7 +313,7 @@ Response:
 
 ---
 
-### POST /balance/llm/reload
+### POST /balance/credits/reload
 Trigger a Kibi Credit reload from the trading wallet.
 
 **Requirements:**
@@ -345,7 +345,7 @@ Errors:
 
 ---
 
-### POST /balance/llm/reload/disable
+### POST /balance/credits/reload/disable
 Emergency kill switch — agent disables its own reload permission. **Cannot be re-enabled by the agent** (human must re-enable via dashboard).
 
 Use this if the agent detects unexpected reload behaviour or wants to self-limit spending.
