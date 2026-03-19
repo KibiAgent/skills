@@ -15,9 +15,9 @@
 | GET | `/jobs/{job_id}` | Poll token creation status |
 | GET | `/token/{address}` | Token price & info (`?chain=base`) |
 | GET | `/tokens/created` | Paginated list of tokens you created |
-| GET | `/balance/llm` | Kibi Credit balance + agent reload config |
-| POST | `/balance/llm/reload` | Reload Kibi Credits from trading wallet |
-| POST | `/balance/llm/reload/disable` | Emergency disable agent reload (irreversible by agent) |
+| GET | `/balance/credits` | Kibi Credit balance + agent reload config |
+| POST | `/balance/credits/reload` | Reload Kibi Credits from trading wallet |
+| POST | `/balance/credits/reload/disable` | Emergency disable agent reload (irreversible by agent) |
 | GET | `/balance/wallet` | On-chain wallet balances (main + trading, all chains) |
 | GET | `/quota` | Daily token creation quota per chain |
 
@@ -61,7 +61,7 @@ Status: `pending` | `processing` | `completed` | `failed`
 
 ---
 
-## GET /balance/llm
+## GET /balance/credits
 
 ```json
 {
@@ -80,7 +80,7 @@ Status: `pending` | `processing` | `completed` | `failed`
 
 ---
 
-## POST /balance/llm/reload
+## POST /balance/credits/reload
 
 Manually reload Kibi Credits from trading wallet. Agent-triggered only (no auto-polling).  
 Requires: user has Agent Reload enabled at kibi.bot/credits + key has `reload_enabled`.
