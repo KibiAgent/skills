@@ -10,7 +10,7 @@ Create tokens on-chain, earn trading fees, and use KibiBot's Kibi LLM Gateway â€
 **Version:** 1.1.0  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required â€” get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
-**Install:** `install the kibibot skill from https://github.com/OfficialKibiBot/skills/tree/main/kibibot`
+**Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
 
 ---
 
