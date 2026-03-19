@@ -25,7 +25,11 @@ Go to [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys) → Creat
 Go to [kibi.bot/credits](https://kibi.bot/credits) → Add Credit.  
 Minimum $1 to start. Credits are consumed per token used.
 
-### Step 3 — Configure OpenClaw
+### Step 3 — Configure OpenClaw *(optional — OpenClaw users only)*
+> **Skip this step** if you're using LangChain, CrewAI, a custom agent, or any framework other than OpenClaw. The Agent API works independently of your model provider.
+>
+> This step registers KibiBot as your agent's AI model provider, so your agent *thinks* using Claude/GPT/Gemini billed to your Kibi Credits — instead of paying Anthropic/OpenAI directly. It's separate from the Agent API skill.
+
 Add KibiBot as an LLM provider in `~/.openclaw/openclaw.json`:
 
 ```json
