@@ -217,7 +217,7 @@ Request:
 }
 ```
 
-- `chain`: `base` | `bsc` | `solana` | `base-sepolia`
+- `chain`: `base` | `bsc` | `solana`
 - `platform` (optional): `basememe` | `clanker` | `flap` | `fourmeme` | `pumpfun` — defaults to chain default if omitted
 - `image_url` (optional): HTTP/HTTPS URL or IPFS URI
 
