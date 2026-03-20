@@ -30,7 +30,7 @@ Minimum $1 to start. Credits are consumed per token used.
 >
 > **OpenClaw users:** follow the config below. If you're using LangChain, CrewAI, or any OpenAI-compatible framework, point your `base_url` to `https://llm.kibi.bot/v1` with your `kb_...` API key instead. More integration guides coming soon.
 
-Add KibiBot as an LLM provider in `~/.openclaw/openclaw.json`:
+**OpenClaw users** — add KibiBot as an LLM provider in `~/.openclaw/openclaw.json`:
 
 ```json
 {
@@ -57,14 +57,33 @@ Add KibiBot as an LLM provider in `~/.openclaw/openclaw.json`:
             "maxTokens": 8192
           },
           {
+            "id": "claude-opus-4-6",
+            "name": "Claude Opus (KibiBot)",
+            "api": "anthropic-messages",
+            "contextWindow": 200000,
+            "maxTokens": 8192
+          },
+          {
             "id": "gpt-4o",
             "name": "GPT-4o (KibiBot)",
             "contextWindow": 128000,
             "maxTokens": 16384
           },
           {
-            "id": "gemini-2.0-flash",
-            "name": "Gemini 2.0 Flash (KibiBot)",
+            "id": "gpt-4o-mini",
+            "name": "GPT-4o Mini (KibiBot)",
+            "contextWindow": 128000,
+            "maxTokens": 16384
+          },
+          {
+            "id": "gemini-2.5-flash",
+            "name": "Gemini 2.5 Flash (KibiBot)",
+            "contextWindow": 1048576,
+            "maxTokens": 8192
+          },
+          {
+            "id": "gemini-2.5-pro",
+            "name": "Gemini 2.5 Pro (KibiBot)",
             "contextWindow": 1048576,
             "maxTokens": 8192
           }
@@ -88,13 +107,12 @@ Set as default model (optional):
 }
 ```
 
-### Step 4 — Restart OpenClaw
+Then restart OpenClaw:
 ```
 openclaw gateway restart
 ```
 
-### Step 5 — Verify
-Ask your agent: *"what's my KibiBot Kibi Credit balance?"*
+Verify by asking your agent: *"what's my KibiBot Kibi Credit balance?"*
 
 ---
 
@@ -200,7 +218,7 @@ Request:
 ```
 
 - `chain`: `base` | `bsc` | `solana` | `base-sepolia`
-- `platform` (optional): `basememe` | `flap` | `pumpfun` | `clanker` — defaults to chain default if omitted
+- `platform` (optional): `basememe` | `clanker` | `flap` | `fourmeme` | `pumpfun` — defaults to chain default if omitted
 - `image_url` (optional): HTTP/HTTPS URL or IPFS URI
 
 Response (`202 Accepted`):
