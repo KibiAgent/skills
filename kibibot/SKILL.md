@@ -28,11 +28,7 @@ Minimum $1 to start. Credits are consumed per token used.
 ### Step 3 — Set up Kibi LLM Gateway *(optional)*
 > This step registers KibiBot as your agent's AI model provider, so your agent *thinks* using Claude/GPT/Gemini billed to your Kibi Credits — instead of paying Anthropic/OpenAI directly. It's separate from the Agent API skill.
 >
-> **OpenClaw users:** follow the config below. If you're using LangChain, CrewAI, or any OpenAI-compatible framework, point your `base_url` to `https://llm.kibi.bot/v1` with your `kb_...` API key instead. More integration guides coming soon.
-
-**OpenClaw users** — add KibiBot as an LLM provider in `~/.openclaw/openclaw.json`:
-
-> ⚠️ **Important:** KibiBot requires **two separate providers** because OpenClaw uses different URL paths for Anthropic (`/v1/messages`) vs OpenAI (`/chat/completions`) format. The `kibi` provider handles Claude models (Anthropic format), and `kibi-oai` handles GPT/Gemini models (OpenAI format).
+> **OpenClaw users** — add KibiBot as an LLM provider in `~/.openclaw/openclaw.json`:
 
 ```json
 {
@@ -42,7 +38,7 @@ Minimum $1 to start. Credits are consumed per token used.
       "kibi": {
         "baseUrl": "https://llm.kibi.bot",
         "apiKey": "YOUR_KB_API_KEY",
-        "api": "anthropic-messages",
+        "api": "openai-completions",
         "models": [
           {
             "id": "kibi-haiku",
@@ -64,14 +60,7 @@ Minimum $1 to start. Credits are consumed per token used.
             "api": "anthropic-messages",
             "contextWindow": 200000,
             "maxTokens": 32000
-          }
-        ]
-      },
-      "kibi-oai": {
-        "baseUrl": "https://llm.kibi.bot/v1",
-        "apiKey": "YOUR_KB_API_KEY",
-        "api": "openai-completions",
-        "models": [
+          },
           {
             "id": "kibi-gpt4o",
             "name": "GPT-4o · Kibi",
@@ -106,10 +95,10 @@ Minimum $1 to start. Credits are consumed per token used.
         "kibi/kibi-haiku": { "alias": "kibi-haiku" },
         "kibi/kibi-sonnet": { "alias": "kibi-sonnet" },
         "kibi/kibi-opus": { "alias": "kibi-opus" },
-        "kibi-oai/kibi-gpt4o": { "alias": "kibi-gpt4o" },
-        "kibi-oai/kibi-gpt4o-mini": { "alias": "kibi-gpt4o-mini" },
-        "kibi-oai/kibi-gemini-flash": { "alias": "kibi-gemini-flash" },
-        "kibi-oai/kibi-gemini-pro": { "alias": "kibi-gemini-pro" }
+        "kibi/kibi-gpt4o": { "alias": "kibi-gpt4o" },
+        "kibi/kibi-gpt4o-mini": { "alias": "kibi-gpt4o-mini" },
+        "kibi/kibi-gemini-flash": { "alias": "kibi-gemini-flash" },
+        "kibi/kibi-gemini-pro": { "alias": "kibi-gemini-pro" }
       }
     }
   }
