@@ -89,6 +89,12 @@ Minimum $1 to start. Credits are consumed per token used.
             "name": "Gemini Flash · Kibi",
             "contextWindow": 1048576,
             "maxTokens": 8192
+          },
+          {
+            "id": "kibi-gemini-pro",
+            "name": "Gemini Pro · Kibi",
+            "contextWindow": 2097152,
+            "maxTokens": 8192
           }
         ]
       }
@@ -102,7 +108,8 @@ Minimum $1 to start. Credits are consumed per token used.
         "kibi/kibi-opus": { "alias": "kibi-opus" },
         "kibi-oai/kibi-gpt4o": { "alias": "kibi-gpt4o" },
         "kibi-oai/kibi-gpt4o-mini": { "alias": "kibi-gpt4o-mini" },
-        "kibi-oai/kibi-gemini-flash": { "alias": "kibi-gemini-flash" }
+        "kibi-oai/kibi-gemini-flash": { "alias": "kibi-gemini-flash" },
+        "kibi-oai/kibi-gemini-pro": { "alias": "kibi-gemini-pro" }
       }
     }
   }
@@ -137,6 +144,7 @@ Switch models using the dropdown picker or `/model` command:
 /model kibi-gpt4o
 /model kibi-gpt4o-mini
 /model kibi-gemini-flash
+/model kibi-gemini-pro
 ```
 
 ### Model ID Mapping
@@ -149,6 +157,7 @@ Switch models using the dropdown picker or `/model` command:
 | `kibi-gpt4o` | GPT-4o |
 | `kibi-gpt4o-mini` | GPT-4o Mini |
 | `kibi-gemini-flash` | Gemini 2.5 Flash |
+| `kibi-gemini-pro` | Gemini 2.5 Pro |
 
 Verify by asking your agent: *"what's my KibiBot Kibi Credit balance?"*
 
