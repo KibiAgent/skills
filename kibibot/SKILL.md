@@ -43,47 +43,47 @@ Minimum $1 to start. Credits are consumed per token used.
         "api": "openai-completions",
         "models": [
           {
-            "id": "kibi-haiku",
-            "name": "Claude Haiku · Kibi",
+            "id": "claude-haiku-4-5",
+            "name": "Kibi Haiku",
             "api": "anthropic-messages",
             "contextWindow": 200000,
             "maxTokens": 4096
           },
           {
-            "id": "kibi-sonnet",
-            "name": "Claude Sonnet · Kibi",
+            "id": "claude-sonnet-4-6",
+            "name": "Kibi Sonnet",
             "api": "anthropic-messages",
             "contextWindow": 200000,
             "maxTokens": 8192
           },
           {
-            "id": "kibi-opus",
-            "name": "Claude Opus · Kibi",
+            "id": "claude-opus-4-6",
+            "name": "Kibi Opus",
             "api": "anthropic-messages",
             "contextWindow": 200000,
             "maxTokens": 32000
           },
           {
-            "id": "kibi-gpt4o",
-            "name": "GPT-4o · Kibi",
+            "id": "gpt-4o",
+            "name": "Kibi GPT-4o",
             "contextWindow": 128000,
             "maxTokens": 16384
           },
           {
-            "id": "kibi-gpt4o-mini",
-            "name": "GPT-4o Mini · Kibi",
+            "id": "gpt-4o-mini",
+            "name": "Kibi GPT-4o Mini",
             "contextWindow": 128000,
             "maxTokens": 16384
           },
           {
-            "id": "kibi-gemini-flash",
-            "name": "Gemini Flash · Kibi",
+            "id": "gemini-2.5-flash",
+            "name": "Kibi Gemini Flash",
             "contextWindow": 1048576,
             "maxTokens": 8192
           },
           {
-            "id": "kibi-gemini-pro",
-            "name": "Gemini Pro · Kibi",
+            "id": "gemini-2.5-pro",
+            "name": "Kibi Gemini Pro",
             "contextWindow": 2097152,
             "maxTokens": 8192
           }
@@ -94,13 +94,13 @@ Minimum $1 to start. Credits are consumed per token used.
   "agents": {
     "defaults": {
       "models": {
-        "kibi/kibi-haiku": { "alias": "kibi-haiku" },
-        "kibi/kibi-sonnet": { "alias": "kibi-sonnet" },
-        "kibi/kibi-opus": { "alias": "kibi-opus" },
-        "kibi/kibi-gpt4o": { "alias": "kibi-gpt4o" },
-        "kibi/kibi-gpt4o-mini": { "alias": "kibi-gpt4o-mini" },
-        "kibi/kibi-gemini-flash": { "alias": "kibi-gemini-flash" },
-        "kibi/kibi-gemini-pro": { "alias": "kibi-gemini-pro" }
+        "kibi/claude-haiku-4-5":  { "alias": "kibi-haiku" },
+        "kibi/claude-sonnet-4-6": { "alias": "kibi-sonnet" },
+        "kibi/claude-opus-4-6":   { "alias": "kibi-opus" },
+        "kibi/gpt-4o":            { "alias": "kibi-gpt4o" },
+        "kibi/gpt-4o-mini":       { "alias": "kibi-gpt4o-mini" },
+        "kibi/gemini-2.5-flash":  { "alias": "kibi-gemini-flash" },
+        "kibi/gemini-2.5-pro":    { "alias": "kibi-gemini-pro" }
       }
     }
   }
@@ -115,7 +115,7 @@ Set as default model (optional):
   "agents": {
     "defaults": {
       "model": {
-        "primary": "kibi/kibi-sonnet"
+        "primary": "kibi/claude-sonnet-4-6"
       }
     }
   }
@@ -138,17 +138,17 @@ Switch models using the dropdown picker or `/model` command:
 /model kibi-gemini-pro
 ```
 
-### Model ID Mapping
+### Available Models
 
-| Model ID | Maps to | Provider | Context |
-|---|---|---|---|
-| `kibi-haiku` | `claude-haiku-4-5` | Anthropic | 200k |
-| `kibi-sonnet` | `claude-sonnet-4-6` | Anthropic | 200k |
-| `kibi-opus` | `claude-opus-4-6` | Anthropic | 200k |
-| `kibi-gpt4o` | `gpt-4o` | OpenAI | 128k |
-| `kibi-gpt4o-mini` | `gpt-4o-mini` | OpenAI | 128k |
-| `kibi-gemini-flash` | `gemini-2.5-flash` | Google | 1M |
-| `kibi-gemini-pro` | `gemini-2.5-pro` | Google | 2M |
+| Model ID | Provider | Context |
+|---|---|---|
+| `claude-haiku-4-5` | Anthropic | 200k |
+| `claude-sonnet-4-6` | Anthropic | 200k |
+| `claude-opus-4-6` | Anthropic | 200k |
+| `gpt-4o` | OpenAI | 128k |
+| `gpt-4o-mini` | OpenAI | 128k |
+| `gemini-2.5-flash` | Google | 1M |
+| `gemini-2.5-pro` | Google | 2M |
 
 Verify by asking your agent: *"what's my KibiBot Kibi Credit balance?"*
 
@@ -504,7 +504,7 @@ curl https://llm.kibi.bot/v1/messages \
   -H "Content-Type: application/json" \
   -H "X-Api-Key: YOUR_KB_API_KEY" \
   -d '{
-    "model": "kibi-haiku",
+    "model": "claude-haiku-4-5",
     "messages": [{"role": "user", "content": "Hello!"}],
     "max_tokens": 100
   }'
@@ -518,7 +518,7 @@ curl https://llm.kibi.bot/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "X-Api-Key: YOUR_KB_API_KEY" \
   -d '{
-    "model": "kibi-gpt4o",
+    "model": "gpt-4o",
     "messages": [{"role": "user", "content": "Hello!"}],
     "max_tokens": 100
   }'
