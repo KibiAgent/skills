@@ -43,46 +43,46 @@ Minimum $1 to start. Credits are consumed per token used.
         "api": "openai-completions",
         "models": [
           {
-            "id": "claude-haiku-4-5",
+            "id": "kibi-haiku",
             "name": "Kibi Haiku",
             "api": "anthropic-messages",
             "contextWindow": 200000,
             "maxTokens": 4096
           },
           {
-            "id": "claude-sonnet-4-6",
+            "id": "kibi-sonnet",
             "name": "Kibi Sonnet",
             "api": "anthropic-messages",
             "contextWindow": 200000,
             "maxTokens": 8192
           },
           {
-            "id": "claude-opus-4-6",
+            "id": "kibi-opus",
             "name": "Kibi Opus",
             "api": "anthropic-messages",
             "contextWindow": 200000,
             "maxTokens": 32000
           },
           {
-            "id": "gpt-4o",
+            "id": "kibi-gpt4o",
             "name": "Kibi GPT-4o",
             "contextWindow": 128000,
             "maxTokens": 16384
           },
           {
-            "id": "gpt-4o-mini",
+            "id": "kibi-gpt4o-mini",
             "name": "Kibi GPT-4o Mini",
             "contextWindow": 128000,
             "maxTokens": 16384
           },
           {
-            "id": "gemini-2.5-flash",
+            "id": "kibi-gemini-flash",
             "name": "Kibi Gemini Flash",
             "contextWindow": 1048576,
             "maxTokens": 8192
           },
           {
-            "id": "gemini-2.5-pro",
+            "id": "kibi-gemini-pro",
             "name": "Kibi Gemini Pro",
             "contextWindow": 2097152,
             "maxTokens": 8192
@@ -94,13 +94,13 @@ Minimum $1 to start. Credits are consumed per token used.
   "agents": {
     "defaults": {
       "models": {
-        "kibi/claude-haiku-4-5":  { "alias": "kibi-haiku" },
-        "kibi/claude-sonnet-4-6": { "alias": "kibi-sonnet" },
-        "kibi/claude-opus-4-6":   { "alias": "kibi-opus" },
-        "kibi/gpt-4o":            { "alias": "kibi-gpt4o" },
-        "kibi/gpt-4o-mini":       { "alias": "kibi-gpt4o-mini" },
-        "kibi/gemini-2.5-flash":  { "alias": "kibi-gemini-flash" },
-        "kibi/gemini-2.5-pro":    { "alias": "kibi-gemini-pro" }
+        "kibi/kibi-haiku":        { "alias": "kibi-haiku" },
+        "kibi/kibi-sonnet":       { "alias": "kibi-sonnet" },
+        "kibi/kibi-opus":         { "alias": "kibi-opus" },
+        "kibi/kibi-gpt4o":        { "alias": "kibi-gpt4o" },
+        "kibi/kibi-gpt4o-mini":   { "alias": "kibi-gpt4o-mini" },
+        "kibi/kibi-gemini-flash": { "alias": "kibi-gemini-flash" },
+        "kibi/kibi-gemini-pro":   { "alias": "kibi-gemini-pro" }
       }
     }
   }
@@ -115,7 +115,7 @@ Set as default model (optional):
   "agents": {
     "defaults": {
       "model": {
-        "primary": "kibi/claude-sonnet-4-6"
+        "primary": "kibi/kibi-sonnet"
       }
     }
   }
