@@ -140,15 +140,15 @@ Switch models using the dropdown picker or `/model` command:
 
 ### Model ID Mapping
 
-| Dropdown / Alias | Actual Model |
-|---|---|
-| `kibi-haiku` | Claude Haiku 4.5 |
-| `kibi-sonnet` | Claude Sonnet 4.6 |
-| `kibi-opus` | Claude Opus 4.6 |
-| `kibi-gpt4o` | GPT-4o |
-| `kibi-gpt4o-mini` | GPT-4o Mini |
-| `kibi-gemini-flash` | Gemini 2.5 Flash |
-| `kibi-gemini-pro` | Gemini 2.5 Pro |
+| Model ID | Maps to | Provider | Context |
+|---|---|---|---|
+| `kibi-haiku` | `claude-haiku-4-5` | Anthropic | 200k |
+| `kibi-sonnet` | `claude-sonnet-4-6` | Anthropic | 200k |
+| `kibi-opus` | `claude-opus-4-6` | Anthropic | 200k |
+| `kibi-gpt4o` | `gpt-4o` | OpenAI | 128k |
+| `kibi-gpt4o-mini` | `gpt-4o-mini` | OpenAI | 128k |
+| `kibi-gemini-flash` | `gemini-2.5-flash` | Google | 1M |
+| `kibi-gemini-pro` | `gemini-2.5-pro` | Google | 2M |
 
 Verify by asking your agent: *"what's my KibiBot Kibi Credit balance?"*
 
@@ -504,7 +504,7 @@ curl https://llm.kibi.bot/v1/messages \
   -H "Content-Type: application/json" \
   -H "X-Api-Key: YOUR_KB_API_KEY" \
   -d '{
-    "model": "claude-haiku-4-5",
+    "model": "kibi-haiku",
     "messages": [{"role": "user", "content": "Hello!"}],
     "max_tokens": 100
   }'
@@ -518,7 +518,7 @@ curl https://llm.kibi.bot/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "X-Api-Key: YOUR_KB_API_KEY" \
   -d '{
-    "model": "gpt-4o",
+    "model": "kibi-gpt4o",
     "messages": [{"role": "user", "content": "Hello!"}],
     "max_tokens": 100
   }'
