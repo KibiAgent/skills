@@ -7,7 +7,7 @@ description: Create tokens on-chain, check Kibi Credit balance, trigger agent cr
 
 Create tokens on-chain, earn trading fees, and use KibiBot's Kibi LLM Gateway — all from natural language commands.
 
-**Version:** 1.1.0  
+**Version:** 1.2.0  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required — get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
 **Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
@@ -32,6 +32,10 @@ Minimum $1 to start. Credits are consumed per token used.
 
 **OpenClaw users** — add KibiBot as an LLM provider in `~/.openclaw/openclaw.json`:
 
+> ⚠️ **Important:** KibiBot requires **two separate providers** because OpenClaw uses different URL paths for Anthropic (`/v1/messages`) vs OpenAI (`/chat/completions`) format. The `kibi` provider handles Claude models (Anthropic format), and `kibi-oai` handles GPT/Gemini models (OpenAI format).
+>
+> ⚠️ **Model IDs must use neutral names** (e.g. `kibi-h45` not `claude-haiku-4-5`). OpenClaw auto-routes model IDs containing provider keywords like `claude`, `haiku`, `sonnet`, `gpt`, `gemini`, `flash` to built-in providers — bypassing KibiBot entirely.
+
 ```json
 {
   "models": {
@@ -40,59 +44,74 @@ Minimum $1 to start. Credits are consumed per token used.
       "kibi": {
         "baseUrl": "https://llm.kibi.bot",
         "apiKey": "YOUR_KB_API_KEY",
-        "api": "openai-completions",
+        "api": "anthropic-messages",
         "models": [
           {
-            "id": "claude-haiku-4-5",
-            "name": "Claude Haiku (KibiBot)",
+            "id": "kibi-h45",
+            "name": "Kibi Haiku 4.5",
             "api": "anthropic-messages",
             "contextWindow": 200000,
             "maxTokens": 4096
           },
           {
-            "id": "claude-sonnet-4-6",
-            "name": "Claude Sonnet (KibiBot)",
+            "id": "kibi-s46",
+            "name": "Kibi Sonnet 4.6",
             "api": "anthropic-messages",
             "contextWindow": 200000,
             "maxTokens": 8192
           },
           {
-            "id": "claude-opus-4-6",
-            "name": "Claude Opus (KibiBot)",
+            "id": "kibi-o46",
+            "name": "Kibi Opus 4.6",
             "api": "anthropic-messages",
             "contextWindow": 200000,
-            "maxTokens": 8192
-          },
+            "maxTokens": 32000
+          }
+        ]
+      },
+      "kibi-oai": {
+        "baseUrl": "https://llm.kibi.bot/v1",
+        "apiKey": "YOUR_KB_API_KEY",
+        "api": "openai-completions",
+        "models": [
           {
-            "id": "gpt-4o",
-            "name": "GPT-4o (KibiBot)",
+            "id": "kibi-g4o",
+            "name": "Kibi GPT-4o",
             "contextWindow": 128000,
             "maxTokens": 16384
           },
           {
-            "id": "gpt-4o-mini",
-            "name": "GPT-4o Mini (KibiBot)",
+            "id": "kibi-g4om",
+            "name": "Kibi GPT-4o Mini",
             "contextWindow": 128000,
             "maxTokens": 16384
           },
           {
-            "id": "gemini-2.5-flash",
-            "name": "Gemini 2.5 Flash (KibiBot)",
-            "contextWindow": 1048576,
-            "maxTokens": 8192
-          },
-          {
-            "id": "gemini-2.5-pro",
-            "name": "Gemini 2.5 Pro (KibiBot)",
+            "id": "kibi-gf25",
+            "name": "Kibi Gemini 2.5 Flash",
             "contextWindow": 1048576,
             "maxTokens": 8192
           }
         ]
       }
     }
+  },
+  "agents": {
+    "defaults": {
+      "models": {
+        "kibi/kibi-h45": {},
+        "kibi/kibi-s46": {},
+        "kibi/kibi-o46": {},
+        "kibi-oai/kibi-g4o": {},
+        "kibi-oai/kibi-g4om": {},
+        "kibi-oai/kibi-gf25": {}
+      }
+    }
   }
 }
 ```
+
+> **Note:** The `agents.defaults.models` block is required — it allowlists the models so OpenClaw permits switching to them.
 
 Set as default model (optional):
 ```json
@@ -100,7 +119,7 @@ Set as default model (optional):
   "agents": {
     "defaults": {
       "model": {
-        "primary": "kibi/claude-sonnet-4-6"
+        "primary": "kibi/kibi-s46"
       }
     }
   }
@@ -111,6 +130,29 @@ Then restart OpenClaw:
 ```
 openclaw gateway restart
 ```
+
+Switch models using the `/model` command with the full provider prefix:
+```
+/model kibi/kibi-s46
+/model kibi/kibi-h45
+/model kibi/kibi-o46
+/model kibi-oai/kibi-g4o
+/model kibi-oai/kibi-g4om
+/model kibi-oai/kibi-gf25
+```
+
+> **Known issue:** The OpenClaw model dropdown picker strips the provider prefix, causing "model not allowed" errors. Use the `/model` command above as a workaround until this is fixed upstream.
+
+### Model ID Mapping
+
+| OpenClaw ID | Actual Model |
+|---|---|
+| `kibi/kibi-h45` | Claude Haiku 4.5 |
+| `kibi/kibi-s46` | Claude Sonnet 4.6 |
+| `kibi/kibi-o46` | Claude Opus 4.6 |
+| `kibi-oai/kibi-g4o` | GPT-4o |
+| `kibi-oai/kibi-g4om` | GPT-4o Mini |
+| `kibi-oai/kibi-gf25` | Gemini 2.5 Flash |
 
 Verify by asking your agent: *"what's my KibiBot Kibi Credit balance?"*
 
