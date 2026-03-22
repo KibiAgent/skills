@@ -7,7 +7,7 @@ description: Create tokens on-chain, check Kibi Credit balance, trigger agent cr
 
 Create tokens on-chain, earn trading fees, and use KibiBot's Kibi LLM Gateway — all from natural language commands.
 
-**Version:** 1.3.0  
+**Version:** 1.4.0  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required — get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
 **Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
@@ -27,6 +27,8 @@ Minimum $1 to start. Credits are consumed per token used.
 
 ### Step 3 — Set up Kibi LLM Gateway *(optional)*
 > This step registers KibiBot as your agent's AI model provider, so your agent *thinks* using Claude/GPT/Gemini billed to your Kibi Credits — instead of paying Anthropic/OpenAI directly. It's separate from the Agent API skill.
+>
+> **OpenClaw users:** follow the config below. If you're using LangChain, CrewAI, or any OpenAI-compatible framework, point your `base_url` to `https://llm.kibi.bot/v1` with your `kb_...` API key instead.
 >
 > **OpenClaw users** — add KibiBot as an LLM provider in `~/.openclaw/openclaw.json`:
 
