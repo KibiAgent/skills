@@ -53,15 +53,15 @@ Minimum $1 to start. Credits are consumed per token used.
             "id": "kibi-sonnet",
             "name": "Kibi Sonnet",
             "api": "anthropic-messages",
-            "contextWindow": 200000,
-            "maxTokens": 8192
+            "contextWindow": 1000000,
+            "maxTokens": 128000
           },
           {
             "id": "kibi-opus",
             "name": "Kibi Opus",
             "api": "anthropic-messages",
-            "contextWindow": 200000,
-            "maxTokens": 32000
+            "contextWindow": 1000000,
+            "maxTokens": 128000
           },
           {
             "id": "kibi-gpt4o",
@@ -84,7 +84,7 @@ Minimum $1 to start. Credits are consumed per token used.
           {
             "id": "kibi-gemini-pro",
             "name": "Kibi Gemini Pro",
-            "contextWindow": 2097152,
+            "contextWindow": 1048576,
             "maxTokens": 8192
           }
         ]
@@ -143,12 +143,12 @@ Switch models using the dropdown picker or `/model` command:
 | Model ID | Provider | Context |
 |---|---|---|
 | `claude-haiku-4-5` | Anthropic | 200k |
-| `claude-sonnet-4-6` | Anthropic | 200k |
-| `claude-opus-4-6` | Anthropic | 200k |
+| `claude-sonnet-4-6` | Anthropic | 1M |
+| `claude-opus-4-6` | Anthropic | 1M |
 | `gpt-4o` | OpenAI | 128k |
 | `gpt-4o-mini` | OpenAI | 128k |
 | `gemini-2.5-flash` | Google | 1M |
-| `gemini-2.5-pro` | Google | 2M |
+| `gemini-2.5-pro` | Google | 1M |
 
 Verify by asking your agent: *"what's my KibiBot Kibi Credit balance?"*
 
