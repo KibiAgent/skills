@@ -7,7 +7,7 @@ description: Create tokens on-chain, check Kibi Credit balance, trigger agent cr
 
 Create tokens on-chain, earn trading fees, and use KibiBot's Kibi LLM Gateway — all from natural language commands.
 
-**Version:** 1.1.0  
+**Version:** 1.4.0  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required — get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
 **Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
@@ -28,9 +28,9 @@ Minimum $1 to start. Credits are consumed per token used.
 ### Step 3 — Set up Kibi LLM Gateway *(optional)*
 > This step registers KibiBot as your agent's AI model provider, so your agent *thinks* using Claude/GPT/Gemini billed to your Kibi Credits — instead of paying Anthropic/OpenAI directly. It's separate from the Agent API skill.
 >
-> **OpenClaw users:** follow the config below. If you're using LangChain, CrewAI, or any OpenAI-compatible framework, point your `base_url` to `https://llm.kibi.bot/v1` with your `kb_...` API key instead. More integration guides coming soon.
-
-Add KibiBot as an LLM provider in `~/.openclaw/openclaw.json`:
+> **OpenClaw users:** follow the config below. If you're using LangChain, CrewAI, or any OpenAI-compatible framework, point your `base_url` to `https://llm.kibi.bot/v1` with your `kb_...` API key instead.
+>
+> **OpenClaw users** — add KibiBot as an LLM provider in `~/.openclaw/openclaw.json`:
 
 ```json
 {
@@ -43,37 +43,71 @@ Add KibiBot as an LLM provider in `~/.openclaw/openclaw.json`:
         "api": "openai-completions",
         "models": [
           {
-            "id": "claude-haiku-4-5",
-            "name": "Claude Haiku (KibiBot)",
+            "id": "kibi-haiku",
+            "name": "Kibi Haiku",
             "api": "anthropic-messages",
             "contextWindow": 200000,
             "maxTokens": 4096
           },
           {
-            "id": "claude-sonnet-4-6",
-            "name": "Claude Sonnet (KibiBot)",
+            "id": "kibi-sonnet",
+            "name": "Kibi Sonnet",
             "api": "anthropic-messages",
-            "contextWindow": 200000,
-            "maxTokens": 8192
+            "contextWindow": 1000000,
+            "maxTokens": 128000
           },
           {
-            "id": "gpt-4o",
-            "name": "GPT-4o (KibiBot)",
+            "id": "kibi-opus",
+            "name": "Kibi Opus",
+            "api": "anthropic-messages",
+            "contextWindow": 1000000,
+            "maxTokens": 128000
+          },
+          {
+            "id": "kibi-gpt4o",
+            "name": "Kibi GPT-4o",
             "contextWindow": 128000,
             "maxTokens": 16384
           },
           {
-            "id": "gemini-2.0-flash",
-            "name": "Gemini 2.0 Flash (KibiBot)",
+            "id": "kibi-gpt4o-mini",
+            "name": "Kibi GPT-4o Mini",
+            "contextWindow": 128000,
+            "maxTokens": 16384
+          },
+          {
+            "id": "kibi-gemini-flash",
+            "name": "Kibi Gemini Flash",
+            "contextWindow": 1048576,
+            "maxTokens": 8192
+          },
+          {
+            "id": "kibi-gemini-pro",
+            "name": "Kibi Gemini Pro",
             "contextWindow": 1048576,
             "maxTokens": 8192
           }
         ]
       }
     }
+  },
+  "agents": {
+    "defaults": {
+      "models": {
+        "kibi/kibi-haiku":        { "alias": "kibi-haiku" },
+        "kibi/kibi-sonnet":       { "alias": "kibi-sonnet" },
+        "kibi/kibi-opus":         { "alias": "kibi-opus" },
+        "kibi/kibi-gpt4o":        { "alias": "kibi-gpt4o" },
+        "kibi/kibi-gpt4o-mini":   { "alias": "kibi-gpt4o-mini" },
+        "kibi/kibi-gemini-flash": { "alias": "kibi-gemini-flash" },
+        "kibi/kibi-gemini-pro":   { "alias": "kibi-gemini-pro" }
+      }
+    }
   }
 }
 ```
+
+> **Note:** The `agents.defaults.models` block is required — it allowlists the models and registers aliases so both the model dropdown picker and `/model` command work correctly. The `alias` must match the model `id` exactly.
 
 Set as default model (optional):
 ```json
@@ -81,20 +115,42 @@ Set as default model (optional):
   "agents": {
     "defaults": {
       "model": {
-        "primary": "kibi/claude-sonnet-4-6"
+        "primary": "kibi/kibi-sonnet"
       }
     }
   }
 }
 ```
 
-### Step 4 — Restart OpenClaw
+Then restart OpenClaw:
 ```
 openclaw gateway restart
 ```
 
-### Step 5 — Verify
-Ask your agent: *"what's my KibiBot Kibi Credit balance?"*
+Switch models using the dropdown picker or `/model` command:
+```
+/model kibi-haiku
+/model kibi-sonnet
+/model kibi-opus
+/model kibi-gpt4o
+/model kibi-gpt4o-mini
+/model kibi-gemini-flash
+/model kibi-gemini-pro
+```
+
+### Available Models
+
+| Model ID | Provider | Context |
+|---|---|---|
+| `claude-haiku-4-5` | Anthropic | 200k |
+| `claude-sonnet-4-6` | Anthropic | 1M |
+| `claude-opus-4-6` | Anthropic | 1M |
+| `gpt-4o` | OpenAI | 128k |
+| `gpt-4o-mini` | OpenAI | 128k |
+| `gemini-2.5-flash` | Google | 1M |
+| `gemini-2.5-pro` | Google | 1M |
+
+Verify by asking your agent: *"what's my KibiBot Kibi Credit balance?"*
 
 ---
 
@@ -199,8 +255,8 @@ Request:
 }
 ```
 
-- `chain`: `base` | `bsc` | `solana` | `base-sepolia`
-- `platform` (optional): `basememe` | `flap` | `pumpfun` | `clanker` — defaults to chain default if omitted
+- `chain`: `base` | `bsc` | `solana`
+- `platform` (optional): `basememe` | `clanker` | `flap` | `fourmeme` | `pumpfun` — defaults to chain default if omitted
 - `image_url` (optional): HTTP/HTTPS URL or IPFS URI
 
 Response (`202 Accepted`):
