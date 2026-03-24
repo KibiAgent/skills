@@ -42,51 +42,22 @@ Minimum $1 to start. Credits are consumed per token used.
         "apiKey": "YOUR_KB_API_KEY",
         "api": "openai-completions",
         "models": [
-          {
-            "id": "kibi-haiku",
-            "name": "Kibi Haiku",
-            "api": "anthropic-messages",
-            "contextWindow": 200000,
-            "maxTokens": 4096
-          },
-          {
-            "id": "kibi-sonnet",
-            "name": "Kibi Sonnet",
-            "api": "anthropic-messages",
-            "contextWindow": 1000000,
-            "maxTokens": 128000
-          },
-          {
-            "id": "kibi-opus",
-            "name": "Kibi Opus",
-            "api": "anthropic-messages",
-            "contextWindow": 1000000,
-            "maxTokens": 128000
-          },
-          {
-            "id": "kibi-gpt4o",
-            "name": "Kibi GPT-4o",
-            "contextWindow": 128000,
-            "maxTokens": 16384
-          },
-          {
-            "id": "kibi-gpt4o-mini",
-            "name": "Kibi GPT-4o Mini",
-            "contextWindow": 128000,
-            "maxTokens": 16384
-          },
-          {
-            "id": "kibi-gemini-flash",
-            "name": "Kibi Gemini Flash",
-            "contextWindow": 1048576,
-            "maxTokens": 8192
-          },
-          {
-            "id": "kibi-gemini-pro",
-            "name": "Kibi Gemini Pro",
-            "contextWindow": 1048576,
-            "maxTokens": 8192
-          }
+          { "id": "kibi-haiku",        "name": "Kibi Haiku",            "api": "anthropic-messages", "contextWindow": 200000,  "maxTokens": 4096  },
+          { "id": "kibi-sonnet",       "name": "Kibi Sonnet",           "api": "anthropic-messages", "contextWindow": 1000000, "maxTokens": 128000 },
+          { "id": "kibi-opus",         "name": "Kibi Opus",             "api": "anthropic-messages", "contextWindow": 1000000, "maxTokens": 128000 },
+          { "id": "kibi-gpt4o",        "name": "Kibi GPT-4o",           "contextWindow": 128000,     "maxTokens": 16384 },
+          { "id": "kibi-gpt4o-mini",   "name": "Kibi GPT-4o Mini",      "contextWindow": 128000,     "maxTokens": 16384 },
+          { "id": "kibi-gemini-flash", "name": "Kibi Gemini Flash",     "contextWindow": 1048576,    "maxTokens": 8192  },
+          { "id": "kibi-gemini-pro",   "name": "Kibi Gemini Pro",       "contextWindow": 1048576,    "maxTokens": 8192  },
+          { "id": "kibi-deepseek-v3",  "name": "Kibi DeepSeek V3.2",   "contextWindow": 163840,     "maxTokens": 16384 },
+          { "id": "kibi-qwen3-coder",  "name": "Kibi Qwen3 Coder",     "contextWindow": 262144,     "maxTokens": 16384 },
+          { "id": "kibi-qwen3-plus",   "name": "Kibi Qwen3.5 Plus",    "contextWindow": 1000000,    "maxTokens": 16384 },
+          { "id": "kibi-qwen3-flash",  "name": "Kibi Qwen3.5 Flash",   "contextWindow": 1000000,    "maxTokens": 16384 },
+          { "id": "kibi-kimi-k2",      "name": "Kibi Kimi K2.5",       "contextWindow": 262144,     "maxTokens": 16384 },
+          { "id": "kibi-minimax-m2",   "name": "Kibi MiniMax M2.5",    "contextWindow": 196608,     "maxTokens": 16384 },
+          { "id": "kibi-minimax-m3",   "name": "Kibi MiniMax M2.7",    "contextWindow": 204800,     "maxTokens": 16384 },
+          { "id": "kibi-seed-lite",    "name": "Kibi Seed 2.0 Lite",   "contextWindow": 262144,     "maxTokens": 16384 },
+          { "id": "kibi-seed-mini",    "name": "Kibi Seed 2.0 Mini",   "contextWindow": 262144,     "maxTokens": 16384 }
         ]
       }
     }
@@ -100,7 +71,16 @@ Minimum $1 to start. Credits are consumed per token used.
         "kibi/kibi-gpt4o":        { "alias": "kibi-gpt4o" },
         "kibi/kibi-gpt4o-mini":   { "alias": "kibi-gpt4o-mini" },
         "kibi/kibi-gemini-flash": { "alias": "kibi-gemini-flash" },
-        "kibi/kibi-gemini-pro":   { "alias": "kibi-gemini-pro" }
+        "kibi/kibi-gemini-pro":   { "alias": "kibi-gemini-pro" },
+        "kibi/kibi-deepseek-v3":  { "alias": "kibi-deepseek-v3" },
+        "kibi/kibi-qwen3-coder":  { "alias": "kibi-qwen3-coder" },
+        "kibi/kibi-qwen3-plus":   { "alias": "kibi-qwen3-plus" },
+        "kibi/kibi-qwen3-flash":  { "alias": "kibi-qwen3-flash" },
+        "kibi/kibi-kimi-k2":      { "alias": "kibi-kimi-k2" },
+        "kibi/kibi-minimax-m2":   { "alias": "kibi-minimax-m2" },
+        "kibi/kibi-minimax-m3":   { "alias": "kibi-minimax-m3" },
+        "kibi/kibi-seed-lite":    { "alias": "kibi-seed-lite" },
+        "kibi/kibi-seed-mini":    { "alias": "kibi-seed-mini" }
       }
     }
   }
@@ -136,6 +116,15 @@ Switch models using the dropdown picker or `/model` command:
 /model kibi-gpt4o-mini
 /model kibi-gemini-flash
 /model kibi-gemini-pro
+/model kibi-deepseek-v3
+/model kibi-qwen3-coder
+/model kibi-qwen3-plus
+/model kibi-qwen3-flash
+/model kibi-kimi-k2
+/model kibi-minimax-m2
+/model kibi-minimax-m3
+/model kibi-seed-lite
+/model kibi-seed-mini
 ```
 
 ### Available Models
@@ -149,6 +138,15 @@ Switch models using the dropdown picker or `/model` command:
 | `gpt-4o-mini` | OpenAI | 128k |
 | `gemini-2.5-flash` | Google | 1M |
 | `gemini-2.5-pro` | Google | 1M |
+| `deepseek-v3.2` | DeepSeek | 164k |
+| `qwen3-coder` | Alibaba | 262k |
+| `qwen3.5-plus` | Alibaba | 1M |
+| `qwen3.5-flash` | Alibaba | 1M |
+| `kimi-k2.5` | Moonshot | 262k |
+| `minimax-m2.5` | MiniMax | 192k |
+| `minimax-m2.7` | MiniMax | 200k |
+| `seed-2.0-lite` | ByteDance | 262k |
+| `seed-2.0-mini` | ByteDance | 262k |
 
 Verify by asking your agent: *"what's my KibiBot Kibi Credit balance?"*
 
