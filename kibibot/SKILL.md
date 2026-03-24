@@ -259,14 +259,16 @@ Request:
   "symbol": "MOON",
   "chain": "base",
   "description": "To the moon",
+  "source_url": "https://x.com/user/status/123",
   "image_url": "https://...",
   "platform": "basememe"
 }
 ```
 
 - `chain`: `base` | `bsc` | `solana`
+- `source_url` (optional): Twitter/X post URL — tweet image used as token image if `image_url` not provided
+- `image_url` (optional): HTTP/HTTPS URL or IPFS URI — overrides source tweet image
 - `platform` (optional): `basememe` | `clanker` | `flap` | `fourmeme` | `pumpfun` — defaults to chain default if omitted
-- `image_url` (optional): HTTP/HTTPS URL or IPFS URI
 
 Response (`202 Accepted`):
 ```json
