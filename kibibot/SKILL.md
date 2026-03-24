@@ -50,7 +50,7 @@ Minimum $1 to start. Credits are consumed per token used.
           { "id": "kibi-gemini-flash", "name": "Kibi Gemini Flash",     "contextWindow": 1048576,    "maxTokens": 8192  },
           { "id": "kibi-gemini-pro",   "name": "Kibi Gemini Pro",       "contextWindow": 1048576,    "maxTokens": 8192  },
           { "id": "kibi-deepseek-v3",  "name": "Kibi DeepSeek V3.2",   "contextWindow": 163840,     "maxTokens": 16384 },
-          { "id": "kibi-qwen3-coder",  "name": "Kibi Qwen3 Coder",     "contextWindow": 262144,     "maxTokens": 16384 },
+          { "id": "kibi-qwen3-coder",  "name": "Kibi Qwen3 Coder",     "contextWindow": 262144,     "maxTokens": 65536 },
           { "id": "kibi-qwen3-plus",   "name": "Kibi Qwen3.5 Plus",    "contextWindow": 1000000,    "maxTokens": 16384 },
           { "id": "kibi-qwen3-flash",  "name": "Kibi Qwen3.5 Flash",   "contextWindow": 1000000,    "maxTokens": 16384 },
           { "id": "kibi-kimi-k2",      "name": "Kibi Kimi K2.5",       "contextWindow": 262144,     "maxTokens": 16384 },
