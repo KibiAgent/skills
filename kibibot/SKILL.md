@@ -1,13 +1,13 @@
 ---
 name: kibibot
-description: Create tokens on-chain, check Kibi Credit balance, trigger agent credit reload, and interact with KibiBot's Agent API and Kibi LLM Gateway. Use when asked to create a token via KibiBot, check KibiBot Kibi Credit balance, check daily token creation quota, reload credits from trading wallet, or make LLM calls through KibiBot's gateway.
+description: Create tokens on-chain, check fee earnings, check Kibi Credit balance, trigger agent credit reload, and interact with KibiBot's Agent API and Kibi LLM Gateway. Use when asked to create a token via KibiBot, check fee earnings across chains and platforms, check KibiBot Kibi Credit balance, check daily token creation quota, reload credits from trading wallet, or make LLM calls through KibiBot's gateway.
 ---
 
 # KibiBot Skill
 
 Create tokens on-chain, earn trading fees, and use KibiBot's Kibi LLM Gateway — all from natural language commands.
 
-**Version:** 1.4.0  
+**Version:** 1.5.0  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required — get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
 **Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
@@ -42,51 +42,22 @@ Minimum $1 to start. Credits are consumed per token used.
         "apiKey": "YOUR_KB_API_KEY",
         "api": "openai-completions",
         "models": [
-          {
-            "id": "kibi-haiku",
-            "name": "Kibi Haiku",
-            "api": "anthropic-messages",
-            "contextWindow": 200000,
-            "maxTokens": 4096
-          },
-          {
-            "id": "kibi-sonnet",
-            "name": "Kibi Sonnet",
-            "api": "anthropic-messages",
-            "contextWindow": 1000000,
-            "maxTokens": 128000
-          },
-          {
-            "id": "kibi-opus",
-            "name": "Kibi Opus",
-            "api": "anthropic-messages",
-            "contextWindow": 1000000,
-            "maxTokens": 128000
-          },
-          {
-            "id": "kibi-gpt4o",
-            "name": "Kibi GPT-4o",
-            "contextWindow": 128000,
-            "maxTokens": 16384
-          },
-          {
-            "id": "kibi-gpt4o-mini",
-            "name": "Kibi GPT-4o Mini",
-            "contextWindow": 128000,
-            "maxTokens": 16384
-          },
-          {
-            "id": "kibi-gemini-flash",
-            "name": "Kibi Gemini Flash",
-            "contextWindow": 1048576,
-            "maxTokens": 8192
-          },
-          {
-            "id": "kibi-gemini-pro",
-            "name": "Kibi Gemini Pro",
-            "contextWindow": 1048576,
-            "maxTokens": 8192
-          }
+          { "id": "kibi-haiku",        "name": "Kibi Haiku",            "api": "anthropic-messages", "contextWindow": 200000,  "maxTokens": 4096  },
+          { "id": "kibi-sonnet",       "name": "Kibi Sonnet",           "api": "anthropic-messages", "contextWindow": 1000000, "maxTokens": 128000 },
+          { "id": "kibi-opus",         "name": "Kibi Opus",             "api": "anthropic-messages", "contextWindow": 1000000, "maxTokens": 128000 },
+          { "id": "kibi-gpt4o",        "name": "Kibi GPT-4o",           "contextWindow": 128000,     "maxTokens": 16384 },
+          { "id": "kibi-gpt4o-mini",   "name": "Kibi GPT-4o Mini",      "contextWindow": 128000,     "maxTokens": 16384 },
+          { "id": "kibi-gemini-flash", "name": "Kibi Gemini Flash",     "contextWindow": 1048576,    "maxTokens": 8192  },
+          { "id": "kibi-gemini-pro",   "name": "Kibi Gemini Pro",       "contextWindow": 1048576,    "maxTokens": 8192  },
+          { "id": "kibi-deepseek-v3",  "name": "Kibi DeepSeek V3.2",   "contextWindow": 163840,     "maxTokens": 16384 },
+          { "id": "kibi-qwen3-coder",  "name": "Kibi Qwen3 Coder",     "contextWindow": 262144,     "maxTokens": 65536 },
+          { "id": "kibi-qwen3-plus",   "name": "Kibi Qwen3.5 Plus",    "contextWindow": 1000000,    "maxTokens": 16384 },
+          { "id": "kibi-qwen3-flash",  "name": "Kibi Qwen3.5 Flash",   "contextWindow": 1000000,    "maxTokens": 16384 },
+          { "id": "kibi-kimi-k2",      "name": "Kibi Kimi K2.5",       "contextWindow": 262144,     "maxTokens": 16384 },
+          { "id": "kibi-minimax-m2",   "name": "Kibi MiniMax M2.5",    "contextWindow": 196608,     "maxTokens": 16384 },
+          { "id": "kibi-minimax-m3",   "name": "Kibi MiniMax M2.7",    "contextWindow": 204800,     "maxTokens": 16384 },
+          { "id": "kibi-seed-lite",    "name": "Kibi Seed 2.0 Lite",   "contextWindow": 262144,     "maxTokens": 16384 },
+          { "id": "kibi-seed-mini",    "name": "Kibi Seed 2.0 Mini",   "contextWindow": 262144,     "maxTokens": 16384 }
         ]
       }
     }
@@ -100,7 +71,16 @@ Minimum $1 to start. Credits are consumed per token used.
         "kibi/kibi-gpt4o":        { "alias": "kibi-gpt4o" },
         "kibi/kibi-gpt4o-mini":   { "alias": "kibi-gpt4o-mini" },
         "kibi/kibi-gemini-flash": { "alias": "kibi-gemini-flash" },
-        "kibi/kibi-gemini-pro":   { "alias": "kibi-gemini-pro" }
+        "kibi/kibi-gemini-pro":   { "alias": "kibi-gemini-pro" },
+        "kibi/kibi-deepseek-v3":  { "alias": "kibi-deepseek-v3" },
+        "kibi/kibi-qwen3-coder":  { "alias": "kibi-qwen3-coder" },
+        "kibi/kibi-qwen3-plus":   { "alias": "kibi-qwen3-plus" },
+        "kibi/kibi-qwen3-flash":  { "alias": "kibi-qwen3-flash" },
+        "kibi/kibi-kimi-k2":      { "alias": "kibi-kimi-k2" },
+        "kibi/kibi-minimax-m2":   { "alias": "kibi-minimax-m2" },
+        "kibi/kibi-minimax-m3":   { "alias": "kibi-minimax-m3" },
+        "kibi/kibi-seed-lite":    { "alias": "kibi-seed-lite" },
+        "kibi/kibi-seed-mini":    { "alias": "kibi-seed-mini" }
       }
     }
   }
@@ -136,6 +116,15 @@ Switch models using the dropdown picker or `/model` command:
 /model kibi-gpt4o-mini
 /model kibi-gemini-flash
 /model kibi-gemini-pro
+/model kibi-deepseek-v3
+/model kibi-qwen3-coder
+/model kibi-qwen3-plus
+/model kibi-qwen3-flash
+/model kibi-kimi-k2
+/model kibi-minimax-m2
+/model kibi-minimax-m3
+/model kibi-seed-lite
+/model kibi-seed-mini
 ```
 
 ### Available Models
@@ -149,6 +138,15 @@ Switch models using the dropdown picker or `/model` command:
 | `gpt-4o-mini` | OpenAI | 128k |
 | `gemini-2.5-flash` | Google | 1M |
 | `gemini-2.5-pro` | Google | 1M |
+| `deepseek-v3.2` | DeepSeek | 164k |
+| `qwen3-coder` | Alibaba | 262k |
+| `qwen3.5-plus` | Alibaba | 1M |
+| `qwen3.5-flash` | Alibaba | 1M |
+| `kimi-k2.5` | Moonshot | 262k |
+| `minimax-m2.5` | MiniMax | 192k |
+| `minimax-m2.7` | MiniMax | 200k |
+| `seed-2.0-lite` | ByteDance | 262k |
+| `seed-2.0-mini` | ByteDance | 262k |
 
 Verify by asking your agent: *"what's my KibiBot Kibi Credit balance?"*
 
@@ -184,6 +182,17 @@ Token creation is async. After calling the API, poll the job status endpoint unt
 ### Wallet Balances
 - "what's my KibiBot wallet balance?"
 - "show my ETH, BNB, SOL and stablecoin balances on KibiBot"
+
+### Fee Earnings
+Check creator fee earnings across all chains and platforms — data is read from pre-computed DB cache (fast, no on-chain calls).
+
+- "what are my KibiBot fee earnings?"
+- "show my fee earnings summary across all chains"
+- "what have I earned from my flap tokens on BSC?"
+- "what are my fee earnings on Base?"
+- "how much have I earned from my pumpfun tokens on Solana?"
+- "how much has token 0x... earned on flap?"
+- "what are the fees for my pumpfun token [mint address]?"
 
 ### Token Lookup
 - "what's the price of $MOON on KibiBot?"
@@ -250,14 +259,16 @@ Request:
   "symbol": "MOON",
   "chain": "base",
   "description": "To the moon",
+  "source_url": "https://x.com/user/status/123",
   "image_url": "https://...",
   "platform": "basememe"
 }
 ```
 
 - `chain`: `base` | `bsc` | `solana`
+- `source_url` (optional): Twitter/X post URL — tweet image used as token image if `image_url` not provided
+- `image_url` (optional): HTTP/HTTPS URL or IPFS URI — overrides source tweet image
 - `platform` (optional): `basememe` | `clanker` | `flap` | `fourmeme` | `pumpfun` — defaults to chain default if omitted
-- `image_url` (optional): HTTP/HTTPS URL or IPFS URI
 
 Response (`202 Accepted`):
 ```json
@@ -448,6 +459,113 @@ Response:
 ```
 
 Any field may be `null` if the wallet is not set up or the RPC is unavailable. Check `*_error` fields (e.g. `eth_error: "rpc_unavailable"`) for failure reasons.
+
+---
+
+### GET /fees/summary
+Get total fee earnings across all chains in a single call. All data is pre-computed — fast, no on-chain calls.
+
+Response:
+```json
+{
+  "bsc": {
+    "chain_id": 56,
+    "token_count": 12,
+    "total_earned_bnb": 0.053
+  },
+  "base": {
+    "chain_id": 8453,
+    "token_count": 7,
+    "basememe_total_earned_eth": "0.0290",
+    "basememe_claimable_eth": "0.0145",
+    "clanker_claimable_weth_eth": "0.0080"
+  },
+  "solana": {
+    "chain_id": 101,
+    "token_count": 4,
+    "total_earnings_sol": 0.05,
+    "total_claimable_sol": 0.012
+  }
+}
+```
+
+---
+
+### GET /fees/earnings
+Get per-platform fee breakdown for a specific chain.
+
+Query: `?chain=bsc` | `?chain=base` | `?chain=solana`
+
+BSC response:
+```json
+{
+  "chain": "bsc",
+  "chain_id": 56,
+  "flap": { "total_earned_bnb": 0.042, "earning_token_count": 3 },
+  "fourmeme": { "total_earned_bnb": 0.011, "earning_token_count": 1 }
+}
+```
+
+Base response:
+```json
+{
+  "chain": "base",
+  "chain_id": 8453,
+  "basememe": { "total_earned_eth": "0.0290", "claimable_eth": "0.0145", "token_count": 5 },
+  "clanker": { "claimable_weth_eth": "0.0080", "token_count": 2 }
+}
+```
+
+Solana response:
+```json
+{
+  "chain": "solana",
+  "chain_id": 101,
+  "pumpfun": { "total_earnings_sol": 0.05, "total_claimable_sol": 0.012, "earning_token_count": 4 }
+}
+```
+
+---
+
+### GET /fees/token
+Get fee earnings for a specific token.
+
+Query: `?chain=bsc&platform=flap&token_address=0x...`
+
+- `chain`: `bsc` | `base` | `solana`
+- `platform`: `flap` | `fourmeme` (BSC) · `pumpfun` (Solana)
+- `token_address`: contract address (EVM) or mint address (Solana)
+
+> **Note:** `basememe` and `clanker` do not support per-token fee tracking — a helpful redirect message is returned instead.
+
+BSC/Flap response:
+```json
+{
+  "token_address": "0x...",
+  "token_name": "MyToken",
+  "token_symbol": "MTK",
+  "platform": "flap",
+  "chain": "bsc",
+  "earned_bnb": 0.021
+}
+```
+
+Solana/Pumpfun response:
+```json
+{
+  "mint": "AbcDef...",
+  "token_name": "MyToken",
+  "token_symbol": "MTK",
+  "platform": "pumpfun",
+  "chain": "solana",
+  "actual_sol": 0.05,
+  "distributable_sol": 0.012,
+  "total_sol": 0.062,
+  "is_graduated": true
+}
+```
+
+Returns `404` if token not found or not owned by the authenticated user.
 
 ---
 
