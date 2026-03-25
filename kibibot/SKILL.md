@@ -30,7 +30,7 @@ Minimum $1 to start. Credits are consumed per token used.
 >
 > **OpenClaw users:** follow the config below. If you're using LangChain, CrewAI, or any OpenAI-compatible framework, point your `base_url` to `https://llm.kibi.bot/v1` with your `kb_...` API key instead.
 >
-> **OpenClaw users** — add KibiBot as an LLM provider in `~/.openclaw/openclaw.json`:
+> **OpenClaw users** — add KibiBot as an LLM provider in `~/.openclaw/openclaw.json`. This is the full config with all available models — you only need to include the models you want to use.
 
 ```json
 {
@@ -119,7 +119,7 @@ Set as default model (optional):
   "agents": {
     "defaults": {
       "model": {
-        "primary": "kibi/kibi-sonnet"
+        "primary": "kibi/kibi-sonnet-4-6"
       }
     }
   }
@@ -133,44 +133,80 @@ openclaw gateway restart
 
 Switch models using the dropdown picker or `/model` command:
 ```
-/model kibi-haiku
-/model kibi-sonnet
-/model kibi-opus
-/model kibi-gpt4o
-/model kibi-gpt4o-mini
-/model kibi-gemini-flash
-/model kibi-gemini-pro
-/model kibi-deepseek-v3
-/model kibi-qwen3-coder
-/model kibi-qwen3-plus
-/model kibi-qwen3-flash
-/model kibi-kimi-k2
-/model kibi-minimax-m2
-/model kibi-minimax-m3
-/model kibi-seed-lite
-/model kibi-seed-mini
+/model kibi-opus-4-6
+/model kibi-sonnet-4-6
+/model kibi-haiku-4-5
+/model kibi-gpt-5-4
+/model kibi-gemini-3-1-pro
+/model kibi-grok-4-1
+/model kibi-deepseek-v3-2
 ```
 
 ### Available Models
 
-| Model ID | Provider | Context |
-|---|---|---|
-| `claude-haiku-4-5` | Anthropic | 200k |
-| `claude-sonnet-4-6` | Anthropic | 1M |
-| `claude-opus-4-6` | Anthropic | 1M |
-| `gpt-4o` | OpenAI | 128k |
-| `gpt-4o-mini` | OpenAI | 128k |
-| `gemini-2.5-flash` | Google | 1M |
-| `gemini-2.5-pro` | Google | 1M |
-| `deepseek-v3.2` | DeepSeek | 164k |
-| `qwen3-coder` | Alibaba | 262k |
-| `qwen3.5-plus` | Alibaba | 1M |
-| `qwen3.5-flash` | Alibaba | 1M |
-| `kimi-k2.5` | Moonshot | 262k |
-| `minimax-m2.5` | MiniMax | 192k |
-| `minimax-m2.7` | MiniMax | 200k |
-| `seed-2.0-lite` | ByteDance | 262k |
-| `seed-2.0-mini` | ByteDance | 262k |
+**Anthropic**
+| Model ID | Context |
+|---|---|
+| `claude-opus-4-6` | 1M |
+| `claude-opus-4-5` | 200k |
+| `claude-sonnet-4-6` | 1M |
+| `claude-sonnet-4-5` | 1M |
+| `claude-haiku-4-5` | 200k |
+
+**Google**
+| Model ID | Context |
+|---|---|
+| `gemini-3.1-pro` | 1M |
+| `gemini-3.1-flash-lite` | 1M |
+| `gemini-3-pro` | 1M |
+| `gemini-3-flash` | 1M |
+| `gemini-2.5-pro` | 1M |
+| `gemini-2.5-flash` | 1M |
+
+**OpenAI**
+| Model ID | Context |
+|---|---|
+| `gpt-5.4-pro` | 1.05M |
+| `gpt-5.4` | 1.05M |
+| `gpt-5.4-mini` | 400k |
+| `gpt-5.4-nano` | 400k |
+| `gpt-5.2-pro` | 400k |
+| `gpt-5.2` | 400k |
+| `gpt-5.2-codex` | 400k |
+
+**xAI**
+| Model ID | Context |
+|---|---|
+| `grok-4.1-fast` | 2M |
+
+**DeepSeek**
+| Model ID | Context |
+|---|---|
+| `deepseek-v3.2` | 164k |
+
+**Alibaba**
+| Model ID | Context |
+|---|---|
+| `qwen3-coder` | 262k |
+| `qwen3.5-plus` | 1M |
+| `qwen3.5-flash` | 1M |
+
+**Moonshot**
+| Model ID | Context |
+|---|---|
+| `kimi-k2.5` | 262k |
+
+**MiniMax**
+| Model ID | Context |
+|---|---|
+| `minimax-m2.7` | 205k |
+| `minimax-m2.5` | 197k |
+
+**ByteDance**
+| Model ID | Context |
+|---|---|
+| `seed-2.0-lite` | 262k |
+| `seed-2.0-mini` | 262k |
 
 Verify by asking your agent: *"what's my KibiBot Kibi Credit balance?"*
 
