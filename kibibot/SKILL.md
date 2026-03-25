@@ -48,7 +48,7 @@ Minimum $1 to start. Credits are consumed per token used.
           { "id": "kibi-sonnet-4-5",            "name": "Claude Sonnet 4.5",        "api": "anthropic-messages", "contextWindow": 1000000,  "maxTokens": 64000  },
           { "id": "kibi-haiku-4-5",             "name": "Claude Haiku 4.5",         "api": "anthropic-messages", "contextWindow": 200000,   "maxTokens": 4096   },
           { "id": "kibi-gemini-3-1-pro",        "name": "Gemini 3.1 Pro",           "contextWindow": 1048576,    "maxTokens": 16384 },
-          { "id": "kibi-gemini-3-1-flash-lite", "name": "Gemini 3.1 Flash Lite",    "contextWindow": 1048576,    "maxTokens": 16384, "reasoning": true },
+          { "id": "kibi-gemini-3-1-flash-lite", "name": "Gemini 3.1 Flash Lite",    "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-gemini-3-pro",          "name": "Gemini 3 Pro",             "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-gemini-3-flash",        "name": "Gemini 3 Flash",           "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-gemini-2-5-pro",        "name": "Gemini 2.5 Pro",           "contextWindow": 1048576,    "maxTokens": 8192  },
@@ -63,13 +63,13 @@ Minimum $1 to start. Credits are consumed per token used.
           { "id": "kibi-grok-4-1",              "name": "Grok 4.1 Fast",            "contextWindow": 2000000,    "maxTokens": 16384 },
           { "id": "kibi-deepseek-v3-2",         "name": "DeepSeek V3.2",            "contextWindow": 163840,     "maxTokens": 16384 },
           { "id": "kibi-qwen-3-coder",          "name": "Qwen3 Coder",              "contextWindow": 262144,     "maxTokens": 16384 },
-          { "id": "kibi-qwen-3-5-plus",         "name": "Qwen3.5 Plus",             "contextWindow": 1000000,    "maxTokens": 16384, "reasoning": true },
-          { "id": "kibi-qwen-3-5-flash",        "name": "Qwen3.5 Flash",            "contextWindow": 1000000,    "maxTokens": 16384, "reasoning": true },
-          { "id": "kibi-kimi-k2-5",             "name": "Kimi K2.5",                "contextWindow": 262144,     "maxTokens": 16384, "reasoning": true },
-          { "id": "kibi-minimax-m2-7",          "name": "MiniMax M2.7",             "contextWindow": 204800,     "maxTokens": 16384, "reasoning": true },
-          { "id": "kibi-minimax-m2-5",          "name": "MiniMax M2.5",             "contextWindow": 196608,     "maxTokens": 16384, "reasoning": true },
-          { "id": "kibi-seed-2-0-lite",         "name": "Seed 2.0 Lite",            "contextWindow": 262144,     "maxTokens": 16384, "reasoning": true },
-          { "id": "kibi-seed-2-0-mini",         "name": "Seed 2.0 Mini",            "contextWindow": 262144,     "maxTokens": 16384, "reasoning": true }
+          { "id": "kibi-qwen-3-5-plus",         "name": "Qwen3.5 Plus",             "contextWindow": 1000000,    "maxTokens": 16384 },
+          { "id": "kibi-qwen-3-5-flash",        "name": "Qwen3.5 Flash",            "contextWindow": 1000000,    "maxTokens": 16384 },
+          { "id": "kibi-kimi-k2-5",             "name": "Kimi K2.5",                "contextWindow": 262144,     "maxTokens": 16384 },
+          { "id": "kibi-minimax-m2-7",          "name": "MiniMax M2.7",             "contextWindow": 204800,     "maxTokens": 16384 },
+          { "id": "kibi-minimax-m2-5",          "name": "MiniMax M2.5",             "contextWindow": 196608,     "maxTokens": 16384 },
+          { "id": "kibi-seed-2-0-lite",         "name": "Seed 2.0 Lite",            "contextWindow": 262144,     "maxTokens": 16384 },
+          { "id": "kibi-seed-2-0-mini",         "name": "Seed 2.0 Mini",            "contextWindow": 262144,     "maxTokens": 16384 }
         ]
       }
     }
