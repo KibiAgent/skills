@@ -65,7 +65,7 @@ Minimum $1 to start. Credits are consumed per token used.
           { "id": "kibi-qwen-3-coder",          "name": "Qwen3 Coder",              "contextWindow": 262144,     "maxTokens": 16384 },
           { "id": "kibi-qwen-3-5-plus",         "name": "Qwen3.5 Plus",             "contextWindow": 1000000,    "maxTokens": 16384 },
           { "id": "kibi-qwen-3-5-flash",        "name": "Qwen3.5 Flash",            "contextWindow": 1000000,    "maxTokens": 16384 },
-          { "id": "kibi-kimi-k2-5",             "name": "Kimi K2.5",                "contextWindow": 262144,     "maxTokens": 16384 },
+          { "id": "kibi-kimi-k2-5",             "name": "Kimi K2.5",                "contextWindow": 262144,     "maxTokens": 16384, "reasoning": true },
           { "id": "kibi-minimax-m2-7",          "name": "MiniMax M2.7",             "contextWindow": 204800,     "maxTokens": 16384 },
           { "id": "kibi-minimax-m2-5",          "name": "MiniMax M2.5",             "contextWindow": 196608,     "maxTokens": 16384 },
           { "id": "kibi-seed-2-0-lite",         "name": "Seed 2.0 Lite",            "contextWindow": 262144,     "maxTokens": 16384 },
