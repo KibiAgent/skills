@@ -54,9 +54,9 @@ Minimum $1 to start. Credits are consumed per token used.
           { "id": "kibi-gpt-5-2-pro",           "name": "GPT 5.2 Pro",              "contextWindow": 400000,     "maxTokens": 16384 },
           { "id": "kibi-gpt-5-2",               "name": "GPT 5.2",                  "contextWindow": 400000,     "maxTokens": 16384 },
           { "id": "kibi-gpt-5-2-codex",         "name": "GPT 5.2 Codex",            "contextWindow": 400000,     "maxTokens": 16384 },
+          { "id": "kibi-gpt-5-2-chat",          "name": "GPT 5.2 Chat",             "contextWindow": 128000,     "maxTokens": 16384 },
           { "id": "kibi-gemini-3-1-pro",        "name": "Gemini 3.1 Pro",           "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-gemini-3-1-flash-lite", "name": "Gemini 3.1 Flash Lite",    "contextWindow": 1048576,    "maxTokens": 16384 },
-          { "id": "kibi-gemini-3-pro",          "name": "Gemini 3 Pro",             "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-gemini-3-flash",        "name": "Gemini 3 Flash",           "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-gemini-2-5-pro",        "name": "Gemini 2.5 Pro",           "contextWindow": 1048576,    "maxTokens": 8192  },
           { "id": "kibi-gemini-2-5-flash",      "name": "Gemini 2.5 Flash",         "contextWindow": 1048576,    "maxTokens": 8192  },
@@ -94,9 +94,9 @@ Minimum $1 to start. Credits are consumed per token used.
         "kibi/kibi-gpt-5-2-pro":           { "alias": "kibi-gpt-5-2-pro" },
         "kibi/kibi-gpt-5-2":               { "alias": "kibi-gpt-5-2" },
         "kibi/kibi-gpt-5-2-codex":         { "alias": "kibi-gpt-5-2-codex" },
+        "kibi/kibi-gpt-5-2-chat":          { "alias": "kibi-gpt-5-2-chat" },
         "kibi/kibi-gemini-3-1-pro":        { "alias": "kibi-gemini-3-1-pro" },
         "kibi/kibi-gemini-3-1-flash-lite": { "alias": "kibi-gemini-3-1-flash-lite" },
-        "kibi/kibi-gemini-3-pro":          { "alias": "kibi-gemini-3-pro" },
         "kibi/kibi-gemini-3-flash":        { "alias": "kibi-gemini-3-flash" },
         "kibi/kibi-gemini-2-5-pro":        { "alias": "kibi-gemini-2-5-pro" },
         "kibi/kibi-gemini-2-5-flash":      { "alias": "kibi-gemini-2-5-flash" },
@@ -173,13 +173,13 @@ Switch models using the dropdown picker or `/model` command:
 | `gpt-5.2-pro` | 400k |
 | `gpt-5.2` | 400k |
 | `gpt-5.2-codex` | 400k |
+| `gpt-5.2-chat` | 128k |
 
 **Google**
 | Model ID | Context |
 |---|---|
 | `gemini-3.1-pro` | 1M |
 | `gemini-3.1-flash-lite` | 1M |
-| `gemini-3-pro` | 1M |
 | `gemini-3-flash` | 1M |
 | `gemini-2.5-pro` | 1M |
 | `gemini-2.5-flash` | 1M |
