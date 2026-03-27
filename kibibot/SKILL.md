@@ -73,6 +73,11 @@ Minimum $1 to start. Credits are consumed per token used.
           { "id": "kibi-qwen-3-5-flash",        "name": "Qwen3.5 Flash",            "contextWindow": 1000000,    "maxTokens": 16384 },
           { "id": "kibi-minimax-m2-7",          "name": "MiniMax M2.7",             "contextWindow": 204800,     "maxTokens": 16384 },
           { "id": "kibi-minimax-m2-5",          "name": "MiniMax M2.5",             "contextWindow": 196608,     "maxTokens": 16384 },
+          { "id": "kibi-seed-2-0-lite",         "name": "Seed 2.0 Lite",            "contextWindow": 262144,     "maxTokens": 16384 },
+          { "id": "kibi-seed-2-0-mini",         "name": "Seed 2.0 Mini",            "contextWindow": 262144,     "maxTokens": 16384 },
+          { "id": "kibi-mimo-v2-pro",           "name": "MiMo-V2-Pro",              "contextWindow": 1048576,    "maxTokens": 16384 },
+          { "id": "kibi-mimo-v2-omni",          "name": "MiMo-V2-Omni",             "contextWindow": 262144,     "maxTokens": 16384 },
+          { "id": "kibi-mimo-v2-flash",         "name": "MiMo-V2-Flash",            "contextWindow": 262144,     "maxTokens": 16384 },
           { "id": "kibi-glm-5-turbo",           "name": "GLM 5 Turbo",              "contextWindow": 202752,     "maxTokens": 16384 },
           { "id": "kibi-glm-5",                 "name": "GLM 5",                    "contextWindow": 80000,      "maxTokens": 16384 }
         ]
@@ -113,6 +118,11 @@ Minimum $1 to start. Credits are consumed per token used.
         "kibi/kibi-qwen-3-5-flash":        { "alias": "kibi-qwen-3-5-flash" },
         "kibi/kibi-minimax-m2-7":          { "alias": "kibi-minimax-m2-7" },
         "kibi/kibi-minimax-m2-5":          { "alias": "kibi-minimax-m2-5" },
+        "kibi/kibi-seed-2-0-lite":         { "alias": "kibi-seed-2-0-lite" },
+        "kibi/kibi-seed-2-0-mini":         { "alias": "kibi-seed-2-0-mini" },
+        "kibi/kibi-mimo-v2-pro":           { "alias": "kibi-mimo-v2-pro" },
+        "kibi/kibi-mimo-v2-omni":          { "alias": "kibi-mimo-v2-omni" },
+        "kibi/kibi-mimo-v2-flash":         { "alias": "kibi-mimo-v2-flash" },
         "kibi/kibi-glm-5-turbo":           { "alias": "kibi-glm-5-turbo" },
         "kibi/kibi-glm-5":                 { "alias": "kibi-glm-5" }
       }
@@ -224,6 +234,19 @@ Switch models using the dropdown picker or `/model` command:
 |---|---|
 | `minimax-m2.7` | 205k |
 | `minimax-m2.5` | 197k |
+
+**Xiaomi**
+| Model ID | Context |
+|---|---|
+| `mimo-v2-pro` | 1M |
+| `mimo-v2-omni` | 262k |
+| `mimo-v2-flash` | 262k |
+
+**ByteDance**
+| Model ID | Context |
+|---|---|
+| `seed-2.0-lite` | 262k |
+| `seed-2.0-mini` | 262k |
 
 **Z.ai**
 | Model ID | Context |
