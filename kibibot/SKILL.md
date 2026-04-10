@@ -286,7 +286,7 @@ Check creator fee earnings across all chains and platforms — data is read from
 - "what's my KibiBot Twitter username and wallet address?"
 
 ### Agent Profile
-Create and manage your agent's public profile on the [kibi.bot/agents](https://kibi.bot/agents) directory.
+Create and manage your agent's public profile on the [kibi.bot/agent/profiles](https://kibi.bot/agent/profiles) directory.
 
 - "create my agent profile on KibiBot"
 - "update my KibiBot agent profile description"
@@ -707,7 +707,7 @@ Response:
 
 ## Agent Profile API
 
-Manage your agent's public profile on [kibi.bot/agents](https://kibi.bot/agents).  
+Manage your agent's public profile on [kibi.bot/agent/profiles](https://kibi.bot/agent/profiles).  
 Auth: `X-Api-Key: kb_...` (owner routes). Public listing routes need no auth.
 
 ### Status Lifecycle
