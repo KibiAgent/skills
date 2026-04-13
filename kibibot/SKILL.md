@@ -7,7 +7,7 @@ description: Create tokens on-chain, check fee earnings, check Kibi Credit balan
 
 Create tokens on-chain, earn trading fees, manage your agent profile, and use KibiBot's Kibi LLM Gateway — all from natural language commands.
 
-**Version:** 1.6.1  
+**Version:** 1.6.2  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required — get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
 **Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
@@ -272,6 +272,7 @@ Check creator fee earnings across all chains and platforms — data is read from
 - "what are my KibiBot fee earnings?"
 - "show my fee earnings summary across all chains"
 - "what have I earned from my flap tokens on BSC?"
+- "what have I earned from my bfun tokens on BSC?"
 - "what are my fee earnings on Base?"
 - "how much have I earned from my pumpfun tokens on Solana?"
 - "how much has token 0x... earned on flap?"
@@ -364,7 +365,7 @@ Request:
 - `chain`: `base` | `bsc` | `solana`
 - `source_url` (optional): Twitter/X post URL — tweet image used as token image if `image_url` not provided
 - `image_url` (optional): HTTP/HTTPS URL or IPFS URI — overrides source tweet image
-- `platform` (optional): `basememe` | `clanker` | `flap` | `fourmeme` | `pumpfun` — defaults to chain default if omitted
+- `platform` (optional): `basememe` | `clanker` | `flap` | `fourmeme` | `bfun` | `pumpfun` — defaults to chain default if omitted
 
 Response (`202 Accepted`):
 ```json
@@ -597,10 +598,13 @@ BSC response:
 {
   "chain": "bsc",
   "chain_id": 56,
-  "flap": { "total_earned_bnb": 0.042, "earning_token_count": 3 },
-  "fourmeme": { "total_earned_bnb": 0.011, "earning_token_count": 1 }
+  "flap":     { "total_earned_bnb": 0.042, "earning_token_count": 3 },
+  "fourmeme": { "total_earned_bnb": 0.011, "earning_token_count": 1 },
+  "bfun":     { "total_earned_bnb": 0.000, "earning_token_count": 0 }
 }
 ```
+
+> `bfun` is always present in the BSC response — treat `0 / 0` as a normal state, not missing platform support.
 
 Base response:
 ```json
@@ -629,7 +633,7 @@ Get fee earnings for a specific token.
 Query: `?chain=bsc&platform=flap&token_address=0x...`
 
 - `chain`: `bsc` | `base` | `solana`
-- `platform`: `flap` | `fourmeme` (BSC) · `pumpfun` (Solana)
+- `platform`: `flap` | `fourmeme` | `bfun` (BSC) · `pumpfun` (Solana)
 - `token_address`: contract address (EVM) or mint address (Solana)
 
 > **Note:** `basememe` and `clanker` do not support per-token fee tracking — a helpful redirect message is returned instead.

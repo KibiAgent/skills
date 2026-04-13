@@ -46,7 +46,7 @@
 ```
 
 Chains: `base` · `bsc` · `solana` · `base-sepolia`  
-Platform (optional): `basememe` · `flap` · `pumpfun` · `clanker`  
+Platform (optional): `basememe` · `clanker` · `flap` · `fourmeme` · `bfun` · `pumpfun`  
 Returns (`202`): `{ "job_id": 12345, "status": "pending", "chain": "base", "quota": {...} }`  
 Poll `/jobs/{job_id}` until `status` is `completed` or `failed`.
 
