@@ -7,7 +7,7 @@ description: Create tokens on-chain, check fee earnings, check Kibi Credit balan
 
 Create tokens on-chain, earn trading fees, manage your agent profile, and use KibiBot's Kibi LLM Gateway — all from natural language commands.
 
-**Version:** 1.6.0  
+**Version:** 1.6.1  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required — get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
 **Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
@@ -73,8 +73,8 @@ Minimum $1 to start. Credits are consumed per token used.
           { "id": "kibi-qwen-3-5-flash",        "name": "Qwen3.5 Flash",            "contextWindow": 1000000,    "maxTokens": 16384 },
           { "id": "kibi-minimax-m2-7",          "name": "MiniMax M2.7",             "contextWindow": 204800,     "maxTokens": 16384 },
           { "id": "kibi-minimax-m2-5",          "name": "MiniMax M2.5",             "contextWindow": 196608,     "maxTokens": 16384 },
-          { "id": "kibi-glm-5-turbo",           "name": "GLM 5 Turbo",              "contextWindow": 202752,     "maxTokens": 16384 },
-          { "id": "kibi-glm-5",                 "name": "GLM 5",                    "contextWindow": 80000,      "maxTokens": 16384 }
+          { "id": "kibi-glm-5-1",               "name": "GLM 5.1",                  "contextWindow": 202752,     "maxTokens": 65535 },
+          { "id": "kibi-glm-5-turbo",           "name": "GLM 5 Turbo",              "contextWindow": 202752,     "maxTokens": 16384 }
         ]
       }
     }
@@ -113,8 +113,8 @@ Minimum $1 to start. Credits are consumed per token used.
         "kibi/kibi-qwen-3-5-flash":        { "alias": "kibi-qwen-3-5-flash" },
         "kibi/kibi-minimax-m2-7":          { "alias": "kibi-minimax-m2-7" },
         "kibi/kibi-minimax-m2-5":          { "alias": "kibi-minimax-m2-5" },
-        "kibi/kibi-glm-5-turbo":           { "alias": "kibi-glm-5-turbo" },
-        "kibi/kibi-glm-5":                 { "alias": "kibi-glm-5" }
+        "kibi/kibi-glm-5-1":               { "alias": "kibi-glm-5-1" },
+        "kibi/kibi-glm-5-turbo":           { "alias": "kibi-glm-5-turbo" }
       }
     }
   }
@@ -228,8 +228,8 @@ Switch models using the dropdown picker or `/model` command:
 **Z.ai**
 | Model ID | Context |
 |---|---|
+| `glm-5.1` | 203k |
 | `glm-5-turbo` | 203k |
-| `glm-5` | 80k |
 
 Verify by asking your agent: *"what's my KibiBot Kibi Credit balance?"*
 
