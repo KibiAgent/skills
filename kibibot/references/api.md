@@ -11,8 +11,9 @@
 |--------|------|-------------|
 | GET | `/me` | User profile & wallet addresses |
 | GET | `/skills` | List all agent capabilities (no auth required) |
-| POST | `/token/create` | Create token on-chain (async) |
+| POST | `/token/create` | Create token on-chain (async); supports `target_twitter_handle` + `fee_recipients` |
 | GET | `/jobs/{job_id}` | Poll token creation status |
+| GET | `/token/platform-config` | Per-platform fee constants, tax rate, fee-split limits |
 | GET | `/token/{address}` | Token price & info (`?chain=base`) |
 | GET | `/tokens/created` | Paginated list of tokens you created |
 | GET | `/balance/credits` | Kibi Credit balance + agent reload config |
@@ -38,17 +39,50 @@
 {
   "name": "MOON",
   "symbol": "MOON",
-  "chain": "base",
+  "chain": "bsc",
   "description": "...",
   "image_url": "https://...",
-  "platform": "basememe"
+  "platform": "flap",
+  "target_twitter_handle": "alice",
+  "fee_recipients": [
+    { "address": "0xAAA...", "percent": 30 },
+    { "twitter_handle": "friend", "percent": 25 }
+  ]
 }
 ```
 
 Chains: `base` · `bsc` · `solana` · `base-sepolia`  
 Platform (optional): `basememe` · `clanker` · `flap` · `fourmeme` · `bfun` · `pumpfun`  
+`target_twitter_handle` (optional, 1–15 `[A-Za-z0-9_]`, no `@`): creates the token *for* this X user — name/symbol/image override from their profile, ownership attributed to them.  
+`fee_recipients` (optional): split creator fees. Each entry has `percent` (1–100, share of **total** trade fees) and exactly one of `address` or `twitter_handle`. Server validates `sum(percent) ≤ max_fee_percent`; any remainder auto-routes to the caller.  
 Returns (`202`): `{ "job_id": 12345, "status": "pending", "chain": "base", "quota": {...} }`  
 Poll `/jobs/{job_id}` until `status` is `completed` or `failed`.
+
+New `422` reasons: unknown platform, platform doesn't support fee split, more than `max_fee_recipients`, `sum(percent) > max_fee_percent`, sum is 0, bad handle/address format.
+
+---
+
+## GET /token/platform-config
+
+Query: `?platform=flap` (required) `&chain_id=56` (optional)
+
+```json
+{
+  "platform":            "clanker",
+  "chain_id":            8453,
+  "platform_fee_bps":    2000,
+  "creator_fee_bps":     8000,
+  "max_fee_recipients":  5,
+  "supports_fee_split":  true,
+  "tax_rate_bps":        100,
+  "max_fee_percent":     80
+}
+```
+
+- `creator_fee_bps = 10000 - platform_fee_bps`
+- Fee split rules: `bps = percent * 100 * 10000 / creator_fee_bps`; remainder auto-assigned to caller (caller slot not counted toward `max_fee_recipients`); handles without a wallet get a Privy wallet auto-provisioned.
+- `supports_fee_split: false` platforms (`basememe`, `pumpfun`, `fourmeme`) reject >1 recipient.
+- Read at runtime — **do not hard-code**.
 
 ---
 

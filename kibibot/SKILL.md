@@ -7,7 +7,7 @@ description: Create tokens on-chain, check fee earnings, check Kibi Credit balan
 
 Create tokens on-chain, earn trading fees, manage your agent profile, and use KibiBot's Kibi LLM Gateway — all from natural language commands.
 
-**Version:** 1.6.2  
+**Version:** 1.7.0  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required — get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
 **Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
@@ -251,6 +251,9 @@ Create tokens on Base, BSC, or Solana — KibiBot handles wallet creation, gas s
 - "launch a token called MOON on Base"
 - "create a meme coin named PEPE with ticker $PEPE on BSC"
 - "make a test token called DEMO on Base Sepolia"
+- "launch a token on Base for @alice" — creates the token on behalf of another X user (name, symbol, and image taken from their profile)
+- "create $DOGE on BSC and send 30% of fees to @friend" — multi-recipient fee split
+- "launch a token on flap, give 40% of fees to 0xAAA… and 20% to @bob" — remainder routes back to you automatically
 
 Token creation is async. After calling the API, poll the job status endpoint until complete (usually 30–60 seconds).
 
@@ -277,6 +280,13 @@ Check creator fee earnings across all chains and platforms — data is read from
 - "how much have I earned from my pumpfun tokens on Solana?"
 - "how much has token 0x... earned on flap?"
 - "what are the fees for my pumpfun token [mint address]?"
+
+### Platform Config
+Look up per-platform fee constants, trading tax, and fee-split limits before building a token-creation UI or fee split.
+
+- "what's the trading tax on flap?"
+- "what's the max fee split percent on clanker?"
+- "does pumpfun support splitting creator fees?"
 
 ### Token Lookup
 - "what's the price of $MOON on KibiBot?"
@@ -354,18 +364,42 @@ Request:
 {
   "name": "MOON",
   "symbol": "MOON",
-  "chain": "base",
+  "chain": "bsc",
   "description": "To the moon",
   "source_url": "https://x.com/user/status/123",
   "image_url": "https://...",
-  "platform": "basememe"
+  "platform": "flap",
+  "target_twitter_handle": "alice",
+  "fee_recipients": [
+    { "address": "0xAAA...", "percent": 30 },
+    { "twitter_handle": "friend", "percent": 25 }
+  ]
 }
 ```
 
-- `chain`: `base` | `bsc` | `solana`
-- `source_url` (optional): Twitter/X post URL — tweet image used as token image if `image_url` not provided
-- `image_url` (optional): HTTP/HTTPS URL or IPFS URI — overrides source tweet image
-- `platform` (optional): `basememe` | `clanker` | `flap` | `fourmeme` | `bfun` | `pumpfun` — defaults to chain default if omitted
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `name` | string (1–32) | yes | Token name |
+| `symbol` | string (1–15, uppercase) | yes | Ticker |
+| `chain` | `"base"` \| `"bsc"` \| `"solana"` | yes | Chain to deploy to |
+| `description` | string | no | Optional description |
+| `source_url` | string | no | X/Twitter URL — tweet image used if `image_url` not provided |
+| `image_url` | string | no | HTTP(S) or `ipfs://` — overrides `source_url` image |
+| `platform` | string | no | `basememe` \| `clanker` \| `flap` \| `fourmeme` \| `bfun` \| `pumpfun` — defaults to chain default |
+| `target_twitter_handle` | string (1–15, `[A-Za-z0-9_]`, no `@`) | no | Create token *for* this X user (see [Create-token-for logic](#create-token-for-logic)) |
+| `fee_recipients` | `FeeRecipient[]` | no | Split creator fees across multiple recipients (see [Fee-sharing logic](#fee-sharing-logic)) |
+
+**`FeeRecipient`**
+
+```jsonc
+{
+  "address":        "0x...",    // EVM address (40 hex) — XOR with twitter_handle
+  "twitter_handle": "friend",    // 1–15 [A-Za-z0-9_], no @ — XOR with address
+  "percent":        30           // integer 1–100, share of TOTAL trade fees
+}
+```
+
+Exactly one of `address` or `twitter_handle` per entry. `percent` is an integer share of the **total trade fee**, not of the creator pool — the server converts to basis points using `creator_fee_bps` from `/token/platform-config`.
 
 Response (`202 Accepted`):
 ```json
@@ -383,9 +417,13 @@ Response (`202 Accepted`):
 ```
 
 Pre-check errors:
-- `403 insufficient_followers` — need minimum followers to create tokens
-- `402 insufficient_balance` — free quota used, trading wallet balance too low
-- `429 daily_cap_exceeded` — absolute daily cap reached across all chains
+
+| Status | When |
+|---|---|
+| `403` | Caller below minimum follower threshold (`insufficient_followers`) |
+| `402` | Free quota used and trading wallet can't cover paid mint (`insufficient_balance`) |
+| `422` | Unknown platform, platform doesn't support fee split, more than `max_fee_recipients`, `sum(percent) > max_fee_percent`, sum is 0, or bad handle/address format |
+| `429` | Daily cap exceeded across all chains (`daily_cap_exceeded`) |
 
 ---
 
@@ -406,6 +444,69 @@ Response:
 ```
 
 Status values: `pending` | `processing` | `completed` | `failed`
+
+---
+
+### GET /token/platform-config
+Per-platform fee constants, trading tax, and fee-split limits. Call this before submitting `fee_recipients` so the UI can cap the max split percent and recipient count.
+
+Query:
+
+| Param | Type | Required | Notes |
+|---|---|---|---|
+| `platform` | string | yes | `flap` \| `bfun` \| `clanker` \| `basememe` \| `pumpfun` \| `fourmeme` |
+| `chain_id` | int | no | Informational, echoed back |
+
+Response:
+```jsonc
+{
+  "platform":            "clanker",
+  "chain_id":            8453,
+  "platform_fee_bps":    2000,   // LP/protocol fixed share
+  "creator_fee_bps":     8000,   // remaining pool = 10000 - platform_fee_bps
+  "max_fee_recipients":  5,      // caller slot is appended server-side, NOT counted
+  "supports_fee_split":  true,   // false → only 1 recipient, no split allowed
+  "tax_rate_bps":        100,    // per-trade tax shown to traders (100 = 1%)
+  "max_fee_percent":     80      // max sum of `percent` across fee_recipients
+}
+```
+
+- Use `max_fee_percent` to cap the UI's fee-split inputs.
+- Use `max_fee_recipients` to cap the recipient row count.
+- `tax_rate_bps` is purely for display (e.g. "trading tax: 1%").
+
+Reference values (read from API at runtime — **do not hard-code**):
+
+| platform | platform_fee_bps | max_fee_recipients | supports_fee_split | tax_rate_bps |
+|---|---:|---:|:---:|---:|
+| flap | 3000 | 8 | ✓ | 300 |
+| bfun | 3000 | 8 | ✓ | 300 |
+| clanker | 2000 | 5 | ✓ | 100 |
+| basememe | 0 | 1 | ✗ | 200 |
+| pumpfun | 0 | 1 | ✗ | 30 |
+| fourmeme | 0 | 1 | ✗ | 300 |
+
+---
+
+### Fee-sharing logic
+
+- `percent` in each `FeeRecipient` is a share of the **total trade fee**, not of the creator pool. Users can think "give 30% of fees to @friend" without knowing the platform's internal split.
+- Server validates `sum(percent) ≤ max_fee_percent` (equivalent to `creator_fee_bps / 100`). `sum(percent)` must also be ≥ 1.
+- Server converts each entry to basis points of the creator pool: `bps = percent * 100 * 10000 / creator_fee_bps`.
+- Any remainder up to 100% of the creator pool is auto-assigned to the **caller's own wallet**. The caller slot does **not** count toward `max_fee_recipients`.
+- Twitter handles resolve to wallet addresses; if a handle has no wallet yet, one is auto-provisioned (Privy) so the recipient can claim later.
+- Platforms with `supports_fee_split: false` (`basememe`, `pumpfun`, `fourmeme`) reject any `fee_recipients` payload with more than 1 entry (`422`).
+
+---
+
+### Create-token-for logic
+
+When `target_twitter_handle` is supplied:
+
+- Token **name** is set to the target's display name, **symbol** to the target's handle (uppercased, ≤15 chars), and **image** to the target's profile picture. Any `name`, `symbol`, or `image_url` in the request are overridden.
+- Token ownership and creator attribution point to the **target user**, not the caller. A Privy wallet is auto-provisioned for the target if one doesn't exist, so they can claim fees later.
+- Default fee recipient is the **caller** (not the target), unless `fee_recipients` is supplied — matches the Twitter-bot behaviour of "I built this for @them but rewards come to me unless I say otherwise."
+- `target_twitter_handle` and `fee_recipients` compose freely.
 
 ---
 
