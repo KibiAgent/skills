@@ -61,7 +61,7 @@ Minimum $1 to start. Credits are consumed per token used.
           { "id": "kibi-gemini-2-5-pro",        "name": "Gemini 2.5 Pro",           "contextWindow": 1048576,    "maxTokens": 8192  },
           { "id": "kibi-gemini-2-5-flash",      "name": "Gemini 2.5 Flash",         "contextWindow": 1048576,    "maxTokens": 8192  },
           { "id": "kibi-grok-4-1",              "name": "Grok 4.1 Fast",            "contextWindow": 2000000,    "maxTokens": 16384 },
-          { "id": "kibi-deepseek-v3-2",         "name": "DeepSeek V3.2",            "contextWindow": 164000,     "maxTokens": 16384 },
+          { "id": "kibi-deepseek-v4-pro",       "name": "DeepSeek V4 Pro",          "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-kimi-k2-6",             "name": "Kimi K2.6",                "contextWindow": 262144,     "maxTokens": 16384 },
           { "id": "kibi-mimo-v2-pro",           "name": "MiMo-V2-Pro",              "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-mimo-v2-omni",          "name": "MiMo-V2-Omni",             "contextWindow": 262144,     "maxTokens": 16384 },
@@ -101,7 +101,7 @@ Minimum $1 to start. Credits are consumed per token used.
         "kibi/kibi-gemini-2-5-pro":        { "alias": "kibi-gemini-2-5-pro" },
         "kibi/kibi-gemini-2-5-flash":      { "alias": "kibi-gemini-2-5-flash" },
         "kibi/kibi-grok-4-1":              { "alias": "kibi-grok-4-1" },
-        "kibi/kibi-deepseek-v3-2":         { "alias": "kibi-deepseek-v3-2" },
+        "kibi/kibi-deepseek-v4-pro":       { "alias": "kibi-deepseek-v4-pro" },
         "kibi/kibi-kimi-k2-6":             { "alias": "kibi-kimi-k2-6" },
         "kibi/kibi-mimo-v2-pro":           { "alias": "kibi-mimo-v2-pro" },
         "kibi/kibi-mimo-v2-omni":          { "alias": "kibi-mimo-v2-omni" },
@@ -149,7 +149,7 @@ Switch models using the dropdown picker or `/model` command:
 /model kibi-gpt-5-4
 /model kibi-gemini-3-1-pro
 /model kibi-grok-4-1
-/model kibi-deepseek-v3-2
+/model kibi-deepseek-v4-pro
 ```
 
 ### Available Models
@@ -192,7 +192,7 @@ Switch models using the dropdown picker or `/model` command:
 **DeepSeek**
 | Model ID | Context |
 |---|---|
-| `deepseek-v3.2` | 164k |
+| `deepseek-v4-pro` | 1M |
 
 **Moonshot**
 | Model ID | Context |
