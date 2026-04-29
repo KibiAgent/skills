@@ -81,7 +81,7 @@ Query: `?platform=flap` (required) `&chain_id=56` (optional)
 
 - `creator_fee_bps = 10000 - platform_fee_bps`
 - Fee split rules: `bps = percent * 100 * 10000 / creator_fee_bps`; remainder auto-assigned to caller (caller slot not counted toward `max_fee_recipients`); handles without a wallet get a Privy wallet auto-provisioned.
-- `supports_fee_split: false` platforms (`basememe`, `pumpfun`, `fourmeme`) reject >1 recipient.
+- `supports_fee_split: false` platforms (`pumpfun`, `fourmeme`) reject >1 recipient.
 - Read at runtime — **do not hard-code**.
 
 ---
