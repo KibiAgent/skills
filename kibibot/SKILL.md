@@ -7,7 +7,7 @@ description: Create tokens on-chain, check fee earnings, check Kibi Credit balan
 
 Create tokens on-chain, earn trading fees, manage your agent profile, and use KibiBot's Kibi LLM Gateway — all from natural language commands.
 
-**Version:** 1.8.0  
+**Version:** 1.8.1  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required — get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
 **Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
@@ -254,7 +254,7 @@ Create tokens on Base, BSC, or Solana — KibiBot handles wallet creation, gas s
 - "launch a token on Base for @alice" — creates the token on behalf of another X user (name, symbol, and image taken from their profile)
 - "create $DOGE on BSC and send 30% of fees to @friend" — multi-recipient fee split
 - "launch a token on flap, give 40% of fees to 0xAAA… and 20% to @bob" — remainder routes back to you automatically
-- "create a basememe token and split fees: 40% to @alice and 20% to @bob" — Basememe now supports up to 9 recipients with a 3% trading tax (30% to Kibi, 70% to creators)
+- "create a basememe token and split fees: 40% to @alice and 20% to @bob" — Basememe now supports up to 9 recipients with a 3% trading tax (10% to Kibi, 90% to creators)
 
 Token creation is async. After calling the API, poll the job status endpoint until complete (usually 30–60 seconds).
 
@@ -480,10 +480,10 @@ Reference values (read from API at runtime — **do not hard-code**):
 
 | platform | platform_fee_bps | max_fee_recipients | supports_fee_split | tax_rate_bps |
 |---|---:|---:|:---:|---:|
-| flap | 3000 | 8 | ✓ | 300 |
-| bfun | 3000 | 8 | ✓ | 300 |
+| flap | 1000 | 8 | ✓ | 300 |
+| bfun | 1000 | 8 | ✓ | 300 |
 | clanker | 2000 | 5 | ✓ | 100 |
-| basememe | 3000 | 9 | ✓ | 300 |
+| basememe | 1000 | 9 | ✓ | 300 |
 | pumpfun | 0 | 1 | ✗ | 30 |
 | fourmeme | 0 | 1 | ✗ | 300 |
 
@@ -531,14 +531,14 @@ Response:
   "creator_reward_usd": "1.23",
   "created_at": "2026-01-01T00:00:00Z",
   "fee_recipients": [
-    { "address": "0xCreator...", "bps": 7000, "twitter_handle": "@user", "profile_image_url": "..." },
-    { "role": "platform", "bps": 3000 }
+    { "address": "0xCreator...", "bps": 9000, "twitter_handle": "@user", "profile_image_url": "..." },
+    { "role": "platform", "bps": 1000 }
   ],
   "is_vanity_address": true
 }
 ```
 
-`fee_recipients` is populated for tokens with fee-split support (Basememe tax tokens, Flap, B.fun, Clanker). Entries with `role: "platform"` are the Kibi protocol slot — they have no `address`, `twitter_handle`, or `profile_image_url`. Legacy Basememe V4 tokens (created before the tax migration) show a single-creator entry with no platform slot. `creator_reward_usd` is populated for Basememe tax tokens (estimated from `volume × 0.021`), previously `null`.
+`fee_recipients` is populated for tokens with fee-split support (Basememe tax tokens, Flap, B.fun, Clanker). Entries with `role: "platform"` are the Kibi protocol slot — they have no `address`, `twitter_handle`, or `profile_image_url`. Legacy Basememe V4 tokens (created before the tax migration) show a single-creator entry with no platform slot. `creator_reward_usd` is populated for Basememe tax tokens (estimated from `volume × 0.027`), previously `null`.
 
 ---
 
