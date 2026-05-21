@@ -7,7 +7,7 @@ description: Create tokens on-chain, check fee earnings, check Kibi Credit balan
 
 Create tokens on-chain, earn trading fees, manage your agent profile, and use KibiBot's Kibi LLM Gateway — all from natural language commands.
 
-**Version:** 1.8.1  
+**Version:** 1.8.2  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required — get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
 **Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
@@ -47,30 +47,30 @@ Minimum $1 to start. Credits are consumed per token used.
           { "id": "kibi-sonnet-4-6",            "name": "Claude Sonnet 4.6",        "api": "anthropic-messages", "contextWindow": 1000000,  "maxTokens": 128000 },
           { "id": "kibi-sonnet-4-5",            "name": "Claude Sonnet 4.5",        "api": "anthropic-messages", "contextWindow": 1000000,  "maxTokens": 64000  },
           { "id": "kibi-haiku-4-5",             "name": "Claude Haiku 4.5",         "api": "anthropic-messages", "contextWindow": 200000,   "maxTokens": 4096   },
+          { "id": "kibi-gpt-5-5",               "name": "GPT 5.5",                  "contextWindow": 1050000,    "maxTokens": 16384 },
           { "id": "kibi-gpt-5-4-pro",           "name": "GPT 5.4 Pro",              "contextWindow": 1050000,    "maxTokens": 16384 },
           { "id": "kibi-gpt-5-4",               "name": "GPT 5.4",                  "contextWindow": 1050000,    "maxTokens": 16384 },
           { "id": "kibi-gpt-5-4-mini",          "name": "GPT 5.4 Mini",             "contextWindow": 400000,     "maxTokens": 16384 },
           { "id": "kibi-gpt-5-4-nano",          "name": "GPT 5.4 Nano",             "contextWindow": 400000,     "maxTokens": 16384 },
           { "id": "kibi-gpt-5-2-pro",           "name": "GPT 5.2 Pro",              "contextWindow": 400000,     "maxTokens": 16384 },
-          { "id": "kibi-gpt-5-2",               "name": "GPT 5.2",                  "contextWindow": 400000,     "maxTokens": 16384 },
           { "id": "kibi-gpt-5-2-codex",         "name": "GPT 5.2 Codex",            "contextWindow": 400000,     "maxTokens": 16384 },
-          { "id": "kibi-gpt-5-2-chat",          "name": "GPT 5.2 Chat",             "contextWindow": 128000,     "maxTokens": 16384 },
           { "id": "kibi-gemini-3-1-pro",        "name": "Gemini 3.1 Pro",           "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-gemini-3-1-flash-lite", "name": "Gemini 3.1 Flash Lite",    "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-gemini-3-flash",        "name": "Gemini 3 Flash",           "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-gemini-2-5-pro",        "name": "Gemini 2.5 Pro",           "contextWindow": 1048576,    "maxTokens": 8192  },
           { "id": "kibi-gemini-2-5-flash",      "name": "Gemini 2.5 Flash",         "contextWindow": 1048576,    "maxTokens": 8192  },
-          { "id": "kibi-grok-4-1",              "name": "Grok 4.1 Fast",            "contextWindow": 2000000,    "maxTokens": 16384 },
+          { "id": "kibi-grok-4-3",              "name": "Grok 4.3",                 "contextWindow": 1000000,    "maxTokens": 16384 },
           { "id": "kibi-deepseek-v4-pro",       "name": "DeepSeek V4 Pro",          "contextWindow": 1048576,    "maxTokens": 16384 },
+          { "id": "kibi-deepseek-v4-flash",     "name": "DeepSeek V4 Flash",        "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-kimi-k2-6",             "name": "Kimi K2.6",                "contextWindow": 262144,     "maxTokens": 16384 },
           { "id": "kibi-mimo-v2-pro",           "name": "MiMo-V2-Pro",              "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-mimo-v2-omni",          "name": "MiMo-V2-Omni",             "contextWindow": 262144,     "maxTokens": 16384 },
           { "id": "kibi-mimo-v2-flash",         "name": "MiMo-V2-Flash",            "contextWindow": 262144,     "maxTokens": 16384 },
           { "id": "kibi-seed-2-0-lite",         "name": "Seed 2.0 Lite",            "contextWindow": 262144,     "maxTokens": 16384 },
           { "id": "kibi-seed-2-0-mini",         "name": "Seed 2.0 Mini",            "contextWindow": 262144,     "maxTokens": 16384 },
-          { "id": "kibi-qwen-3-coder",          "name": "Qwen3 Coder",              "contextWindow": 262144,     "maxTokens": 16384 },
+          { "id": "kibi-qwen-3-6-flash",        "name": "Qwen3.6 Flash",            "contextWindow": 1000000,    "maxTokens": 16384 },
+          { "id": "kibi-qwen-3-coder-next",     "name": "Qwen3 Coder Next",         "contextWindow": 262144,     "maxTokens": 16384 },
           { "id": "kibi-qwen-3-5-plus",         "name": "Qwen3.5 Plus",             "contextWindow": 1000000,    "maxTokens": 16384 },
-          { "id": "kibi-qwen-3-5-flash",        "name": "Qwen3.5 Flash",            "contextWindow": 1000000,    "maxTokens": 16384 },
           { "id": "kibi-minimax-m2-7",          "name": "MiniMax M2.7",             "contextWindow": 204800,     "maxTokens": 16384 },
           { "id": "kibi-minimax-m2-5",          "name": "MiniMax M2.5",             "contextWindow": 196608,     "maxTokens": 16384 },
           { "id": "kibi-glm-5-1",               "name": "GLM 5.1",                  "contextWindow": 202752,     "maxTokens": 65535 },
@@ -87,30 +87,30 @@ Minimum $1 to start. Credits are consumed per token used.
         "kibi/kibi-sonnet-4-6":            { "alias": "kibi-sonnet-4-6" },
         "kibi/kibi-sonnet-4-5":            { "alias": "kibi-sonnet-4-5" },
         "kibi/kibi-haiku-4-5":             { "alias": "kibi-haiku-4-5" },
+        "kibi/kibi-gpt-5-5":               { "alias": "kibi-gpt-5-5" },
         "kibi/kibi-gpt-5-4-pro":           { "alias": "kibi-gpt-5-4-pro" },
         "kibi/kibi-gpt-5-4":               { "alias": "kibi-gpt-5-4" },
         "kibi/kibi-gpt-5-4-mini":          { "alias": "kibi-gpt-5-4-mini" },
         "kibi/kibi-gpt-5-4-nano":          { "alias": "kibi-gpt-5-4-nano" },
         "kibi/kibi-gpt-5-2-pro":           { "alias": "kibi-gpt-5-2-pro" },
-        "kibi/kibi-gpt-5-2":               { "alias": "kibi-gpt-5-2" },
         "kibi/kibi-gpt-5-2-codex":         { "alias": "kibi-gpt-5-2-codex" },
-        "kibi/kibi-gpt-5-2-chat":          { "alias": "kibi-gpt-5-2-chat" },
         "kibi/kibi-gemini-3-1-pro":        { "alias": "kibi-gemini-3-1-pro" },
         "kibi/kibi-gemini-3-1-flash-lite": { "alias": "kibi-gemini-3-1-flash-lite" },
         "kibi/kibi-gemini-3-flash":        { "alias": "kibi-gemini-3-flash" },
         "kibi/kibi-gemini-2-5-pro":        { "alias": "kibi-gemini-2-5-pro" },
         "kibi/kibi-gemini-2-5-flash":      { "alias": "kibi-gemini-2-5-flash" },
-        "kibi/kibi-grok-4-1":              { "alias": "kibi-grok-4-1" },
+        "kibi/kibi-grok-4-3":              { "alias": "kibi-grok-4-3" },
         "kibi/kibi-deepseek-v4-pro":       { "alias": "kibi-deepseek-v4-pro" },
+        "kibi/kibi-deepseek-v4-flash":     { "alias": "kibi-deepseek-v4-flash" },
         "kibi/kibi-kimi-k2-6":             { "alias": "kibi-kimi-k2-6" },
         "kibi/kibi-mimo-v2-pro":           { "alias": "kibi-mimo-v2-pro" },
         "kibi/kibi-mimo-v2-omni":          { "alias": "kibi-mimo-v2-omni" },
         "kibi/kibi-mimo-v2-flash":         { "alias": "kibi-mimo-v2-flash" },
         "kibi/kibi-seed-2-0-lite":         { "alias": "kibi-seed-2-0-lite" },
         "kibi/kibi-seed-2-0-mini":         { "alias": "kibi-seed-2-0-mini" },
-        "kibi/kibi-qwen-3-coder":          { "alias": "kibi-qwen-3-coder" },
+        "kibi/kibi-qwen-3-6-flash":        { "alias": "kibi-qwen-3-6-flash" },
+        "kibi/kibi-qwen-3-coder-next":     { "alias": "kibi-qwen-3-coder-next" },
         "kibi/kibi-qwen-3-5-plus":         { "alias": "kibi-qwen-3-5-plus" },
-        "kibi/kibi-qwen-3-5-flash":        { "alias": "kibi-qwen-3-5-flash" },
         "kibi/kibi-minimax-m2-7":          { "alias": "kibi-minimax-m2-7" },
         "kibi/kibi-minimax-m2-5":          { "alias": "kibi-minimax-m2-5" },
         "kibi/kibi-glm-5-1":               { "alias": "kibi-glm-5-1" },
@@ -148,7 +148,7 @@ Switch models using the dropdown picker or `/model` command:
 /model kibi-haiku-4-5
 /model kibi-gpt-5-4
 /model kibi-gemini-3-1-pro
-/model kibi-grok-4-1
+/model kibi-grok-4-3
 /model kibi-deepseek-v4-pro
 ```
 
@@ -166,14 +166,13 @@ Switch models using the dropdown picker or `/model` command:
 **OpenAI**
 | Model ID | Context |
 |---|---|
+| `gpt-5.5` | 1.05M |
 | `gpt-5.4-pro` | 1.05M |
 | `gpt-5.4` | 1.05M |
 | `gpt-5.4-mini` | 400k |
 | `gpt-5.4-nano` | 400k |
 | `gpt-5.2-pro` | 400k |
-| `gpt-5.2` | 400k |
 | `gpt-5.2-codex` | 400k |
-| `gpt-5.2-chat` | 128k |
 
 **Google**
 | Model ID | Context |
@@ -187,12 +186,13 @@ Switch models using the dropdown picker or `/model` command:
 **xAI**
 | Model ID | Context |
 |---|---|
-| `grok-4.1-fast` | 2M |
+| `grok-4.3` | 1M |
 
 **DeepSeek**
 | Model ID | Context |
 |---|---|
 | `deepseek-v4-pro` | 1M |
+| `deepseek-v4-flash` | 1M |
 
 **Moonshot**
 | Model ID | Context |
@@ -215,9 +215,9 @@ Switch models using the dropdown picker or `/model` command:
 **Alibaba**
 | Model ID | Context |
 |---|---|
-| `qwen3-coder` | 262k |
+| `qwen3.6-flash` | 1M |
+| `qwen3-coder-next` | 262k |
 | `qwen3.5-plus` | 1M |
-| `qwen3.5-flash` | 1M |
 
 **MiniMax**
 | Model ID | Context |
@@ -1064,7 +1064,7 @@ curl https://llm.kibi.bot/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "X-Api-Key: YOUR_KB_API_KEY" \
   -d '{
-    "model": "gpt-4o",
+    "model": "gpt-5.4-nano",
     "messages": [{"role": "user", "content": "Hello!"}],
     "max_tokens": 100
   }'
