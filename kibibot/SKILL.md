@@ -7,7 +7,7 @@ description: Create tokens on-chain, check fee earnings, check Kibi Credit balan
 
 Create tokens on-chain, earn trading fees, manage your agent profile, and use KibiBot's Kibi LLM Gateway — all from natural language commands.
 
-**Version:** 1.8.2  
+**Version:** 1.8.3  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required — get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
 **Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
@@ -54,11 +54,11 @@ Minimum $1 to start. Credits are consumed per token used.
           { "id": "kibi-gpt-5-4-nano",          "name": "GPT 5.4 Nano",             "contextWindow": 400000,     "maxTokens": 16384 },
           { "id": "kibi-gpt-5-2-pro",           "name": "GPT 5.2 Pro",              "contextWindow": 400000,     "maxTokens": 16384 },
           { "id": "kibi-gpt-5-2-codex",         "name": "GPT 5.2 Codex",            "contextWindow": 400000,     "maxTokens": 16384 },
+          { "id": "kibi-gemini-3-5-flash",      "name": "Gemini 3.5 Flash",         "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-gemini-3-1-pro",        "name": "Gemini 3.1 Pro",           "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-gemini-3-1-flash-lite", "name": "Gemini 3.1 Flash Lite",    "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-gemini-3-flash",        "name": "Gemini 3 Flash",           "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-gemini-2-5-pro",        "name": "Gemini 2.5 Pro",           "contextWindow": 1048576,    "maxTokens": 8192  },
-          { "id": "kibi-gemini-2-5-flash",      "name": "Gemini 2.5 Flash",         "contextWindow": 1048576,    "maxTokens": 8192  },
           { "id": "kibi-grok-4-3",              "name": "Grok 4.3",                 "contextWindow": 1000000,    "maxTokens": 16384 },
           { "id": "kibi-deepseek-v4-pro",       "name": "DeepSeek V4 Pro",          "contextWindow": 1048576,    "maxTokens": 16384 },
           { "id": "kibi-deepseek-v4-flash",     "name": "DeepSeek V4 Flash",        "contextWindow": 1048576,    "maxTokens": 16384 },
@@ -68,9 +68,9 @@ Minimum $1 to start. Credits are consumed per token used.
           { "id": "kibi-mimo-v2-flash",         "name": "MiMo-V2-Flash",            "contextWindow": 262144,     "maxTokens": 16384 },
           { "id": "kibi-seed-2-0-lite",         "name": "Seed 2.0 Lite",            "contextWindow": 262144,     "maxTokens": 16384 },
           { "id": "kibi-seed-2-0-mini",         "name": "Seed 2.0 Mini",            "contextWindow": 262144,     "maxTokens": 16384 },
+          { "id": "kibi-qwen-3-7-max",          "name": "Qwen3.7 Max",              "contextWindow": 1000000,    "maxTokens": 16384 },
           { "id": "kibi-qwen-3-6-flash",        "name": "Qwen3.6 Flash",            "contextWindow": 1000000,    "maxTokens": 16384 },
           { "id": "kibi-qwen-3-coder-next",     "name": "Qwen3 Coder Next",         "contextWindow": 262144,     "maxTokens": 16384 },
-          { "id": "kibi-qwen-3-5-plus",         "name": "Qwen3.5 Plus",             "contextWindow": 1000000,    "maxTokens": 16384 },
           { "id": "kibi-minimax-m2-7",          "name": "MiniMax M2.7",             "contextWindow": 204800,     "maxTokens": 16384 },
           { "id": "kibi-minimax-m2-5",          "name": "MiniMax M2.5",             "contextWindow": 196608,     "maxTokens": 16384 },
           { "id": "kibi-glm-5-1",               "name": "GLM 5.1",                  "contextWindow": 202752,     "maxTokens": 65535 },
@@ -94,11 +94,11 @@ Minimum $1 to start. Credits are consumed per token used.
         "kibi/kibi-gpt-5-4-nano":          { "alias": "kibi-gpt-5-4-nano" },
         "kibi/kibi-gpt-5-2-pro":           { "alias": "kibi-gpt-5-2-pro" },
         "kibi/kibi-gpt-5-2-codex":         { "alias": "kibi-gpt-5-2-codex" },
+        "kibi/kibi-gemini-3-5-flash":      { "alias": "kibi-gemini-3-5-flash" },
         "kibi/kibi-gemini-3-1-pro":        { "alias": "kibi-gemini-3-1-pro" },
         "kibi/kibi-gemini-3-1-flash-lite": { "alias": "kibi-gemini-3-1-flash-lite" },
         "kibi/kibi-gemini-3-flash":        { "alias": "kibi-gemini-3-flash" },
         "kibi/kibi-gemini-2-5-pro":        { "alias": "kibi-gemini-2-5-pro" },
-        "kibi/kibi-gemini-2-5-flash":      { "alias": "kibi-gemini-2-5-flash" },
         "kibi/kibi-grok-4-3":              { "alias": "kibi-grok-4-3" },
         "kibi/kibi-deepseek-v4-pro":       { "alias": "kibi-deepseek-v4-pro" },
         "kibi/kibi-deepseek-v4-flash":     { "alias": "kibi-deepseek-v4-flash" },
@@ -108,9 +108,9 @@ Minimum $1 to start. Credits are consumed per token used.
         "kibi/kibi-mimo-v2-flash":         { "alias": "kibi-mimo-v2-flash" },
         "kibi/kibi-seed-2-0-lite":         { "alias": "kibi-seed-2-0-lite" },
         "kibi/kibi-seed-2-0-mini":         { "alias": "kibi-seed-2-0-mini" },
+        "kibi/kibi-qwen-3-7-max":          { "alias": "kibi-qwen-3-7-max" },
         "kibi/kibi-qwen-3-6-flash":        { "alias": "kibi-qwen-3-6-flash" },
         "kibi/kibi-qwen-3-coder-next":     { "alias": "kibi-qwen-3-coder-next" },
-        "kibi/kibi-qwen-3-5-plus":         { "alias": "kibi-qwen-3-5-plus" },
         "kibi/kibi-minimax-m2-7":          { "alias": "kibi-minimax-m2-7" },
         "kibi/kibi-minimax-m2-5":          { "alias": "kibi-minimax-m2-5" },
         "kibi/kibi-glm-5-1":               { "alias": "kibi-glm-5-1" },
@@ -177,11 +177,11 @@ Switch models using the dropdown picker or `/model` command:
 **Google**
 | Model ID | Context |
 |---|---|
+| `gemini-3.5-flash` | 1M |
 | `gemini-3.1-pro` | 1M |
 | `gemini-3.1-flash-lite` | 1M |
 | `gemini-3-flash` | 1M |
 | `gemini-2.5-pro` | 1M |
-| `gemini-2.5-flash` | 1M |
 
 **xAI**
 | Model ID | Context |
@@ -215,9 +215,9 @@ Switch models using the dropdown picker or `/model` command:
 **Alibaba**
 | Model ID | Context |
 |---|---|
+| `qwen3.7-max` | 1M |
 | `qwen3.6-flash` | 1M |
 | `qwen3-coder-next` | 262k |
-| `qwen3.5-plus` | 1M |
 
 **MiniMax**
 | Model ID | Context |
