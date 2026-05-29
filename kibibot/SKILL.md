@@ -42,8 +42,8 @@ Minimum $1 to start. Credits are consumed per token used.
         "apiKey": "YOUR_KB_API_KEY",
         "api": "openai-completions",
         "models": [
+          { "id": "kibi-opus-4-8",              "name": "Claude Opus 4.8",          "api": "anthropic-messages", "contextWindow": 1000000,  "maxTokens": 65536  },
           { "id": "kibi-opus-4-7",              "name": "Claude Opus 4.7",          "api": "anthropic-messages", "contextWindow": 1000000,  "maxTokens": 128000 },
-          { "id": "kibi-opus-4-6",              "name": "Claude Opus 4.6",          "api": "anthropic-messages", "contextWindow": 1000000,  "maxTokens": 128000 },
           { "id": "kibi-sonnet-4-6",            "name": "Claude Sonnet 4.6",        "api": "anthropic-messages", "contextWindow": 1000000,  "maxTokens": 128000 },
           { "id": "kibi-sonnet-4-5",            "name": "Claude Sonnet 4.5",        "api": "anthropic-messages", "contextWindow": 1000000,  "maxTokens": 64000  },
           { "id": "kibi-haiku-4-5",             "name": "Claude Haiku 4.5",         "api": "anthropic-messages", "contextWindow": 200000,   "maxTokens": 4096   },
@@ -82,8 +82,8 @@ Minimum $1 to start. Credits are consumed per token used.
   "agents": {
     "defaults": {
       "models": {
+        "kibi/kibi-opus-4-8":              { "alias": "kibi-opus-4-8" },
         "kibi/kibi-opus-4-7":              { "alias": "kibi-opus-4-7" },
-        "kibi/kibi-opus-4-6":              { "alias": "kibi-opus-4-6" },
         "kibi/kibi-sonnet-4-6":            { "alias": "kibi-sonnet-4-6" },
         "kibi/kibi-sonnet-4-5":            { "alias": "kibi-sonnet-4-5" },
         "kibi/kibi-haiku-4-5":             { "alias": "kibi-haiku-4-5" },
@@ -143,7 +143,7 @@ openclaw gateway restart
 
 Switch models using the dropdown picker or `/model` command:
 ```
-/model kibi-opus-4-7
+/model kibi-opus-4-8
 /model kibi-sonnet-4-6
 /model kibi-haiku-4-5
 /model kibi-gpt-5-4
@@ -157,8 +157,8 @@ Switch models using the dropdown picker or `/model` command:
 **Anthropic**
 | Model ID | Context |
 |---|---|
+| `claude-opus-4-8` | 1M |
 | `claude-opus-4-7` | 1M |
-| `claude-opus-4-6` | 1M |
 | `claude-sonnet-4-6` | 1M |
 | `claude-sonnet-4-5` | 1M |
 | `claude-haiku-4-5` | 200k |
