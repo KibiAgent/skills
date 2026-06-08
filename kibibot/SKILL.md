@@ -7,7 +7,7 @@ description: Create tokens on-chain, check fee earnings, check Kibi Credit balan
 
 Create tokens on-chain, earn trading fees, manage your agent profile, and use KibiBot's Kibi LLM Gateway — all from natural language commands.
 
-**Version:** 1.8.3  
+**Version:** 1.8.4  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required — get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
 **Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
@@ -246,11 +246,10 @@ Use KibiBot-hosted AI models billed against your Kibi Credits. Same API key for 
 - **Model info:** "what models does KibiBot support?"
 
 ### Token Creation
-Create tokens on Base, BSC, or Solana — KibiBot handles wallet creation, gas sponsorship, and on-chain deployment.
+Create tokens on BSC, Base, or Solana — KibiBot handles wallet creation, gas sponsorship, and on-chain deployment.
 
-- "launch a token called MOON on Base"
 - "create a meme coin named PEPE with ticker $PEPE on BSC"
-- "make a test token called DEMO on Base Sepolia"
+- "launch a token called MOON on Base"
 - "launch a token on Base for @alice" — creates the token on behalf of another X user (name, symbol, and image taken from their profile)
 - "create $DOGE on BSC and send 30% of fees to @friend" — multi-recipient fee split
 - "launch a token on flap, give 40% of fees to 0xAAA… and 20% to @bob" — remainder routes back to you automatically
@@ -347,7 +346,7 @@ Response:
   "skills": [
     {
       "name": "token_create",
-      "description": "Deploy a new token on Base, BSC, or Solana",
+      "description": "Deploy a new token on BSC, Base, or Solana",
       "example": "POST /agent/v1/token/create {\"name\": \"MyToken\", \"symbol\": \"MTK\", \"chain\": \"base\"}"
     }
   ],
@@ -382,11 +381,11 @@ Request:
 |---|---|---|---|
 | `name` | string (1–32) | yes | Token name |
 | `symbol` | string (1–15, uppercase) | yes | Ticker |
-| `chain` | `"base"` \| `"bsc"` \| `"solana"` | yes | Chain to deploy to |
+| `chain` | `"bsc"` \| `"base"` \| `"solana"` | yes | Chain to deploy to |
 | `description` | string | no | Optional description |
 | `source_url` | string | no | X/Twitter URL — tweet image used if `image_url` not provided |
 | `image_url` | string | no | HTTP(S) or `ipfs://` — overrides `source_url` image |
-| `platform` | string | no | `basememe` \| `clanker` \| `flap` \| `fourmeme` \| `bfun` \| `pumpfun` — defaults to chain default |
+| `platform` | string | no | `flap` \| `fourmeme` \| `bfun` \| `basememe` \| `clanker` \| `pumpfun` — defaults to chain default |
 | `target_twitter_handle` | string (1–15, `[A-Za-z0-9_]`, no `@`) | no | Create token *for* this X user (see [Create-token-for logic](#create-token-for-logic)) |
 | `fee_recipients` | `FeeRecipient[]` | no | Split creator fees across multiple recipients (see [Fee-sharing logic](#fee-sharing-logic)) |
 
@@ -455,7 +454,7 @@ Query:
 
 | Param | Type | Required | Notes |
 |---|---|---|---|
-| `platform` | string | yes | `flap` \| `bfun` \| `clanker` \| `basememe` \| `pumpfun` \| `fourmeme` |
+| `platform` | string | yes | `flap` \| `fourmeme` \| `bfun` \| `basememe` \| `clanker` \| `pumpfun` |
 | `chain_id` | int | no | Informational, echoed back |
 
 Response:
@@ -481,11 +480,11 @@ Reference values (read from API at runtime — **do not hard-code**):
 | platform | platform_fee_bps | max_fee_recipients | supports_fee_split | tax_rate_bps |
 |---|---:|---:|:---:|---:|
 | flap | 1000 | 8 | ✓ | 300 |
-| bfun | 1000 | 8 | ✓ | 300 |
-| clanker | 2000 | 5 | ✓ | 100 |
-| basememe | 1000 | 9 | ✓ | 300 |
-| pumpfun | 0 | 1 | ✗ | 30 |
 | fourmeme | 0 | 1 | ✗ | 300 |
+| bfun | 1000 | 8 | ✓ | 300 |
+| basememe | 1000 | 9 | ✓ | 300 |
+| clanker | 2000 | 5 | ✓ | 100 |
+| pumpfun | 0 | 1 | ✗ | 30 |
 
 ---
 
@@ -538,7 +537,7 @@ Response:
 }
 ```
 
-`fee_recipients` is populated for tokens with fee-split support (Basememe tax tokens, Flap, B.fun, Clanker). Entries with `role: "platform"` are the Kibi protocol slot — they have no `address`, `twitter_handle`, or `profile_image_url`. Legacy Basememe V4 tokens (created before the tax migration) show a single-creator entry with no platform slot. `creator_reward_usd` is populated for Basememe tax tokens (estimated from `volume × 0.027`), previously `null`.
+`fee_recipients` is populated for tokens with fee-split support (Flap, B.fun, Basememe tax tokens, Clanker). Entries with `role: "platform"` are the Kibi protocol slot — they have no `address`, `twitter_handle`, or `profile_image_url`. Legacy Basememe V4 tokens (created before the tax migration) show a single-creator entry with no platform slot. `creator_reward_usd` is populated for Basememe tax tokens (estimated from `volume × 0.027`), previously `null`.
 
 ---
 
@@ -786,21 +785,21 @@ Response:
 {
   "chains": [
     {
-      "chain": "base",
-      "free_used_today": 1,
-      "free_limit": 3,
-      "sponsored_remaining": 2,
-      "can_create_paid": true,
-      "trading_wallet_balance": "0.010000 ETH",
-      "trading_wallet_address": "0x..."
-    },
-    {
       "chain": "bsc",
       "free_used_today": 0,
       "free_limit": 3,
       "sponsored_remaining": 3,
       "can_create_paid": false,
       "trading_wallet_balance": "0.000000 BNB",
+      "trading_wallet_address": "0x..."
+    },
+    {
+      "chain": "base",
+      "free_used_today": 1,
+      "free_limit": 3,
+      "sponsored_remaining": 2,
+      "can_create_paid": true,
+      "trading_wallet_balance": "0.010000 ETH",
       "trading_wallet_address": "0x..."
     },
     {
@@ -949,7 +948,7 @@ Query parameters:
 | `limit` | 20 | Results per page (1–100) |
 | `offset` | 0 | Pagination offset |
 | `search` | — | Substring search on name and description (max 200 chars) |
-| `chain` | — | Filter by chain: `base`, `bsc`, `solana`, etc. |
+| `chain` | — | Filter by chain: `bsc`, `base`, `solana`, etc. |
 
 Response:
 ```json

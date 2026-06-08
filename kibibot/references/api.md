@@ -51,8 +51,8 @@
 }
 ```
 
-Chains: `base` · `bsc` · `solana` · `base-sepolia`  
-Platform (optional): `basememe` · `clanker` · `flap` · `fourmeme` · `bfun` · `pumpfun`  
+Chains: `bsc` · `base` · `solana` · `base-sepolia`  
+Platform (optional): `flap` · `fourmeme` · `bfun` · `basememe` · `clanker` · `pumpfun`  
 `target_twitter_handle` (optional, 1–15 `[A-Za-z0-9_]`, no `@`): creates the token *for* this X user — name/symbol/image override from their profile, ownership attributed to them.  
 `fee_recipients` (optional): split creator fees. Each entry has `percent` (1–100, share of **total** trade fees) and exactly one of `address` or `twitter_handle`. Server validates `sum(percent) ≤ max_fee_percent`; any remainder auto-routes to the caller.  
 Returns (`202`): `{ "job_id": 12345, "status": "pending", "chain": "base", "quota": {...} }`  
