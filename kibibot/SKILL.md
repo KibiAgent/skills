@@ -7,7 +7,7 @@ description: Create tokens on-chain, check fee earnings, check Kibi Credit balan
 
 Create tokens on-chain, earn trading fees, manage your agent profile, and use KibiBot's Kibi LLM Gateway — all from natural language commands.
 
-**Version:** 1.8.4  
+**Version:** 1.9.0  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required — get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
 **Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
@@ -254,6 +254,7 @@ Create tokens on BSC, Base, or Solana — KibiBot handles wallet creation, gas s
 - "create $DOGE on BSC and send 30% of fees to @friend" — multi-recipient fee split
 - "launch a token on flap, give 40% of fees to 0xAAA… and 20% to @bob" — remainder routes back to you automatically
 - "create a basememe token and split fees: 40% to @alice and 20% to @bob" — Basememe now supports up to 9 recipients with a 3% trading tax (10% to Kibi, 90% to creators)
+- "launch a token on doppler on Base" — Doppler (Uniswap V4) launch, **Base only**, 1.2% swap fee, fee splits up to 5 recipients (creator 90% / Kibi 10%)
 
 Token creation is async. After calling the API, poll the job status endpoint until complete (usually 30–60 seconds).
 
@@ -385,7 +386,7 @@ Request:
 | `description` | string | no | Optional description |
 | `source_url` | string | no | X/Twitter URL — tweet image used if `image_url` not provided |
 | `image_url` | string | no | HTTP(S) or `ipfs://` — overrides `source_url` image |
-| `platform` | string | no | `flap` \| `fourmeme` \| `bfun` \| `basememe` \| `clanker` \| `pumpfun` — defaults to chain default |
+| `platform` | string | no | `flap` \| `fourmeme` \| `bfun` \| `basememe` \| `clanker` \| `doppler` \| `pumpfun` — defaults to chain default |
 | `target_twitter_handle` | string (1–15, `[A-Za-z0-9_]`, no `@`) | no | Create token *for* this X user (see [Create-token-for logic](#create-token-for-logic)) |
 | `fee_recipients` | `FeeRecipient[]` | no | Split creator fees across multiple recipients (see [Fee-sharing logic](#fee-sharing-logic)) |
 
@@ -454,7 +455,7 @@ Query:
 
 | Param | Type | Required | Notes |
 |---|---|---|---|
-| `platform` | string | yes | `flap` \| `fourmeme` \| `bfun` \| `basememe` \| `clanker` \| `pumpfun` |
+| `platform` | string | yes | `flap` \| `fourmeme` \| `bfun` \| `basememe` \| `clanker` \| `doppler` \| `pumpfun` |
 | `chain_id` | int | no | Informational, echoed back |
 
 Response:
@@ -484,7 +485,10 @@ Reference values (read from API at runtime — **do not hard-code**):
 | bfun | 1000 | 8 | ✓ | 300 |
 | basememe | 1000 | 9 | ✓ | 300 |
 | clanker | 2000 | 5 | ✓ | 100 |
+| doppler | 1000 | 5 | ✓ | 120 |
 | pumpfun | 0 | 1 | ✗ | 30 |
+
+> `doppler` is **Base-only** (Uniswap V4 multicurve). `tax_rate_bps: 120` = the 1.2% V4 swap fee; `creator_fee_bps` resolves to 9000 (creator 90% / Kibi 10%), `max_fee_percent` 90.
 
 ---
 
@@ -537,7 +541,7 @@ Response:
 }
 ```
 
-`fee_recipients` is populated for tokens with fee-split support (Flap, B.fun, Basememe tax tokens, Clanker). Entries with `role: "platform"` are the Kibi protocol slot — they have no `address`, `twitter_handle`, or `profile_image_url`. Legacy Basememe V4 tokens (created before the tax migration) show a single-creator entry with no platform slot. `creator_reward_usd` is populated for Basememe tax tokens (estimated from `volume × 0.027`), previously `null`.
+`fee_recipients` is populated for tokens with fee-split support (Flap, B.fun, Basememe tax tokens, Clanker, Doppler). Entries with `role: "platform"` are the Kibi protocol slot — they have no `address`, `twitter_handle`, or `profile_image_url`. Legacy Basememe V4 tokens (created before the tax migration) show a single-creator entry with no platform slot. `creator_reward_usd` is populated for Basememe tax tokens (estimated from `volume × 0.027`), previously `null`.
 
 ---
 
@@ -723,6 +727,8 @@ Base response:
   "clanker": { "claimable_weth_eth": "0.0080", "token_count": 2 }
 }
 ```
+
+> **Doppler** creator fees are **not** returned by the agent `/fees` endpoints. Doppler uses a per-token creator self-claim (the creator signs `collectFees` from their own wallet), managed on the web app — view/claim at [kibi.bot/fees](https://kibi.bot/fees). Doppler price / market cap are still available via `GET /token/{address}`.
 
 Solana response:
 ```json
