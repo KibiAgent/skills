@@ -7,7 +7,7 @@ description: Create tokens on-chain, check fee earnings, check Kibi Credit balan
 
 Create tokens on-chain, earn trading fees, manage your agent profile, and use KibiBot's Kibi LLM Gateway — all from natural language commands.
 
-**Version:** 1.9.0  
+**Version:** 1.9.1  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required — get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
 **Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
@@ -254,7 +254,7 @@ Create tokens on BSC, Base, or Solana — KibiBot handles wallet creation, gas s
 - "create $DOGE on BSC and send 30% of fees to @friend" — multi-recipient fee split
 - "launch a token on flap, give 40% of fees to 0xAAA… and 20% to @bob" — remainder routes back to you automatically
 - "create a basememe token and split fees: 40% to @alice and 20% to @bob" — Basememe now supports up to 9 recipients with a 3% trading tax (10% to Kibi, 90% to creators)
-- "launch a token on doppler on Base" — Doppler (Uniswap V4) launch, **Base only**, 1.2% swap fee, fee splits up to 5 recipients (creator 90% / Kibi 10%)
+- "launch a token on doppler on Base" — Doppler (Uniswap V4) launch, 1.2% swap fee, fee splits up to 5 recipients (creator 90% / Kibi 10%)
 
 Token creation is async. After calling the API, poll the job status endpoint until complete (usually 30–60 seconds).
 
@@ -488,8 +488,6 @@ Reference values (read from API at runtime — **do not hard-code**):
 | doppler | 1000 | 5 | ✓ | 120 |
 | pumpfun | 0 | 1 | ✗ | 30 |
 
-> `doppler` is **Base-only** (Uniswap V4 multicurve). `tax_rate_bps: 120` = the 1.2% V4 swap fee; `creator_fee_bps` resolves to 9000 (creator 90% / Kibi 10%), `max_fee_percent` 90.
-
 ---
 
 ### Fee-sharing logic
@@ -687,7 +685,9 @@ Response:
     "token_count": 7,
     "basememe_total_earned_eth": "0.0290",
     "basememe_claimable_eth": "0.0145",
-    "clanker_claimable_weth_eth": "0.0080"
+    "clanker_claimable_weth_eth": "0.0080",
+    "doppler_claimable_weth_eth": "0.0030",
+    "doppler_claimable_token_usd": 1.50
   },
   "solana": {
     "chain_id": 101,
@@ -724,11 +724,12 @@ Base response:
   "chain": "base",
   "chain_id": 8453,
   "basememe": { "total_earned_eth": "0.0290", "claimable_eth": "0.0145", "token_count": 5 },
-  "clanker": { "claimable_weth_eth": "0.0080", "token_count": 2 }
+  "clanker": { "claimable_weth_eth": "0.0080", "token_count": 2 },
+  "doppler": { "claimable_weth_eth": "0.0030", "claimable_token_usd": 1.50, "token_count": 3 }
 }
 ```
 
-> **Doppler** creator fees are **not** returned by the agent `/fees` endpoints. Doppler uses a per-token creator self-claim (the creator signs `collectFees` from their own wallet), managed on the web app — view/claim at [kibi.bot/fees](https://kibi.bot/fees). Doppler price / market cap are still available via `GET /token/{address}`.
+> Each Base platform's claimable fees are returned in the response above. `claimable_weth_eth` is the WETH side; where a platform also accrues fees in the launched token, that side is surfaced as `claimable_token_usd` (USD-valued). Values are pre-computed (fast — no per-request on-chain call). Claiming is creator self-claim from your own wallet on the web app at [kibi.bot/fees](https://kibi.bot/fees) — there is no agent claim endpoint. Platform objects added in later API builds are omitted for older clients.
 
 Solana response:
 ```json
