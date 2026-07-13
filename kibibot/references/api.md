@@ -14,7 +14,7 @@
 | POST | `/token/create` | Create token on-chain (async); supports `target_twitter_handle` + `fee_recipients` |
 | GET | `/jobs/{job_id}` | Poll token creation status |
 | GET | `/token/platform-config` | Per-platform fee constants, tax rate, fee-split limits |
-| GET | `/token/{address}` | Token price & info (`?chain=base`) |
+| GET | `/token/{address}` | Token price & info (`?chain=base` \| `bsc` \| `solana` \| `robinhood`) |
 | GET | `/tokens/created` | Paginated list of tokens you created |
 | GET | `/balance/credits` | Kibi Credit balance + agent reload config |
 | POST | `/balance/credits/reload` | Reload Kibi Credits from trading wallet |
@@ -51,14 +51,24 @@
 }
 ```
 
-Chains: `bsc` · `base` · `solana` · `base-sepolia`  
-Platform (optional): `flap` · `fourmeme` · `bfun` · `basememe` · `clanker` · `doppler` · `pumpfun`  
+Chains: `bsc` · `base` · `solana` · `robinhood` · `base-sepolia`  
+Platform (optional): `flap` · `fourmeme` · `bfun` · `basememe` · `clanker` · `doppler` · `pumpfun` — must run on the chosen chain:
+
+| chain | chain_id | platforms | default |
+|---|---:|---|---|
+| `bsc` | 56 | `flap`, `fourmeme`, `bfun` | `flap` |
+| `base` | 8453 | `basememe`, `clanker`, `doppler` | `basememe` |
+| `robinhood` | 4663 | `flap`, `doppler` | `flap` |
+| `solana` | 101 | `pumpfun` | `pumpfun` |
+
 `target_twitter_handle` (optional, 1–15 `[A-Za-z0-9_]`, no `@`): creates the token *for* this X user — name/symbol/image override from their profile, ownership attributed to them.  
 `fee_recipients` (optional): split creator fees. Each entry has `percent` (1–100, share of **total** trade fees) and exactly one of `address` or `twitter_handle`. Server validates `sum(percent) ≤ max_fee_percent`; any remainder auto-routes to the caller.  
 Returns (`202`): `{ "job_id": 12345, "status": "pending", "chain": "base", "quota": {...} }`  
 Poll `/jobs/{job_id}` until `status` is `completed` or `failed`.
 
-New `422` reasons: unknown platform, platform doesn't support fee split, more than `max_fee_recipients`, `sum(percent) > max_fee_percent`, sum is 0, bad handle/address format.
+New `422` reasons: unknown platform, **platform doesn't run on the requested chain (`platform_not_on_chain`)**, platform doesn't support fee split, more than `max_fee_recipients`, `sum(percent) > max_fee_percent`, sum is 0, bad handle/address format.
+
+**Robinhood (4663):** native gas token is ETH (own chain, separate from Base — Base ETH isn't spendable there). All Robinhood fee amounts are ETH-denominated, including Flap (which is BNB-denominated on BSC). Robinhood tokens aren't indexed by market-data providers yet, so price/market-cap/volume read `null`/`0`.
 
 ---
 
@@ -154,9 +164,13 @@ Requires: user has Agent Reload enabled at kibi.bot/credits + key has `reload_en
 
 Fields are `null` if wallet not set up or RPC unavailable. Check `*_error` fields.
 
+`balance_eth` is **Base** ETH. This endpoint does not break out a Robinhood (4663) ETH balance — use `/quota` for that (Robinhood is a separate chain; Base ETH is not spendable on it).
+
 ---
 
 ## GET /quota
+
+One entry per chain: `base` · `bsc` · `robinhood` · `solana`.
 
 ```json
 {
@@ -168,6 +182,15 @@ Fields are `null` if wallet not set up or RPC unavailable. Check `*_error` field
       "sponsored_remaining": 2,
       "can_create_paid": true,
       "trading_wallet_balance": "0.01 ETH",
+      "trading_wallet_address": "0x..."
+    },
+    {
+      "chain": "robinhood",
+      "free_used_today": 0,
+      "free_limit": 3,
+      "sponsored_remaining": 3,
+      "can_create_paid": true,
+      "trading_wallet_balance": "0.004 ETH",
       "trading_wallet_address": "0x..."
     }
   ]

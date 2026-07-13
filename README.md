@@ -7,7 +7,7 @@ Plug-and-play skills for AI agents to interact with KibiBot — the on-chain tok
 Tell your OpenClaw agent:
 
 ```
-install the kibibot skill from https://github.com/OfficialKibiBot/skills/tree/main/kibibot
+install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot
 ```
 
 ## Available Skills

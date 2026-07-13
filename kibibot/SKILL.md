@@ -7,7 +7,7 @@ description: Create tokens on-chain, check fee earnings, check Kibi Credit balan
 
 Create tokens on-chain, earn trading fees, manage your agent profile, and use KibiBot's Kibi LLM Gateway — all from natural language commands.
 
-**Version:** 1.9.1  
+**Version:** 1.10.0  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required — get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
 **Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
@@ -246,15 +246,17 @@ Use KibiBot-hosted AI models billed against your Kibi Credits. Same API key for 
 - **Model info:** "what models does KibiBot support?"
 
 ### Token Creation
-Create tokens on BSC, Base, or Solana — KibiBot handles wallet creation, gas sponsorship, and on-chain deployment.
+Create tokens on BSC, Base, Robinhood, or Solana — KibiBot handles wallet creation, gas sponsorship, and on-chain deployment.
 
 - "create a meme coin named PEPE with ticker $PEPE on BSC"
 - "launch a token called MOON on Base"
+- "launch a token called HOOD on Robinhood" — Robinhood Chain (4663), launched via Flap by default
 - "launch a token on Base for @alice" — creates the token on behalf of another X user (name, symbol, and image taken from their profile)
 - "create $DOGE on BSC and send 30% of fees to @friend" — multi-recipient fee split
 - "launch a token on flap, give 40% of fees to 0xAAA… and 20% to @bob" — remainder routes back to you automatically
 - "create a basememe token and split fees: 40% to @alice and 20% to @bob" — Basememe now supports up to 9 recipients with a 3% trading tax (10% to Kibi, 90% to creators)
 - "launch a token on doppler on Base" — Doppler (Uniswap V4) launch, 1.2% swap fee, fee splits up to 5 recipients (creator 90% / Kibi 10%)
+- "launch a token on doppler on Robinhood" — Doppler also runs on Robinhood; Flap is the chain default, so name Doppler explicitly to use it
 
 Token creation is async. After calling the API, poll the job status endpoint until complete (usually 30–60 seconds).
 
@@ -278,6 +280,7 @@ Check creator fee earnings across all chains and platforms — data is read from
 - "what have I earned from my flap tokens on BSC?"
 - "what have I earned from my bfun tokens on BSC?"
 - "what are my fee earnings on Base?"
+- "what have I earned on Robinhood?" — returns Flap (ETH) + Doppler claimable
 - "how much have I earned from my pumpfun tokens on Solana?"
 - "how much has token 0x... earned on flap?"
 - "what are the fees for my pumpfun token [mint address]?"
@@ -347,7 +350,7 @@ Response:
   "skills": [
     {
       "name": "token_create",
-      "description": "Deploy a new token on BSC, Base, or Solana",
+      "description": "Deploy a new token on Base, BSC, Robinhood, or Solana",
       "example": "POST /agent/v1/token/create {\"name\": \"MyToken\", \"symbol\": \"MTK\", \"chain\": \"base\"}"
     }
   ],
@@ -382,11 +385,22 @@ Request:
 |---|---|---|---|
 | `name` | string (1–32) | yes | Token name |
 | `symbol` | string (1–15, uppercase) | yes | Ticker |
-| `chain` | `"bsc"` \| `"base"` \| `"solana"` | yes | Chain to deploy to |
+| `chain` | `"bsc"` \| `"base"` \| `"solana"` \| `"robinhood"` | yes | Chain to deploy to |
 | `description` | string | no | Optional description |
 | `source_url` | string | no | X/Twitter URL — tweet image used if `image_url` not provided |
 | `image_url` | string | no | HTTP(S) or `ipfs://` — overrides `source_url` image |
-| `platform` | string | no | `flap` \| `fourmeme` \| `bfun` \| `basememe` \| `clanker` \| `doppler` \| `pumpfun` — defaults to chain default |
+| `platform` | string | no | `flap` \| `fourmeme` \| `bfun` \| `basememe` \| `clanker` \| `doppler` \| `pumpfun` — defaults to the chain default. Must be a platform that runs on `chain` (see below) or the call is rejected `422`. |
+
+**Which platforms run on which chain** — a `platform` that doesn't run on the requested `chain` (e.g. `clanker` on `robinhood`) is rejected with `422 platform_not_on_chain`. Omit `platform` to get the chain default.
+
+| chain | chain_id | platforms | default |
+|---|---:|---|---|
+| `bsc` | 56 | `flap`, `fourmeme`, `bfun` | `flap` |
+| `base` | 8453 | `basememe`, `clanker`, `doppler` | `basememe` |
+| `robinhood` | 4663 | `flap`, `doppler` | `flap` |
+| `solana` | 101 | `pumpfun` | `pumpfun` |
+
+> **Robinhood Chain (4663)** is an EVM L2; its native gas token is **ETH** (like Base, but a separate chain — Base ETH is not spendable on Robinhood, and the trading wallet needs its own ETH there to self-pay once free quota is used). Robinhood fee amounts are therefore denominated in **ETH**, not BNB — even for Flap, which is BNB-denominated on BSC. Note that Robinhood tokens are **not yet indexed by DexScreener/TokenLens**, so `price_usd`, `market_cap_usd`, and `volume_24h_usd` come back `null`/`0` on `GET /token/{address}` for 4663 tokens. Fee earnings are unaffected — they're read straight from the chain.
 | `target_twitter_handle` | string (1–15, `[A-Za-z0-9_]`, no `@`) | no | Create token *for* this X user (see [Create-token-for logic](#create-token-for-logic)) |
 | `fee_recipients` | `FeeRecipient[]` | no | Split creator fees across multiple recipients (see [Fee-sharing logic](#fee-sharing-logic)) |
 
@@ -423,7 +437,7 @@ Pre-check errors:
 |---|---|
 | `403` | Caller below minimum follower threshold (`insufficient_followers`) |
 | `402` | Free quota used and trading wallet can't cover paid mint (`insufficient_balance`) |
-| `422` | Unknown platform, platform doesn't support fee split, more than `max_fee_recipients`, `sum(percent) > max_fee_percent`, sum is 0, or bad handle/address format |
+| `422` | Unknown platform, platform doesn't run on the requested chain (`platform_not_on_chain`), platform doesn't support fee split, more than `max_fee_recipients`, `sum(percent) > max_fee_percent`, sum is 0, or bad handle/address format |
 | `429` | Daily cap exceeded across all chains (`daily_cap_exceeded`) |
 
 ---
@@ -478,15 +492,17 @@ Response:
 
 Reference values (read from API at runtime — **do not hard-code**):
 
-| platform | platform_fee_bps | max_fee_recipients | supports_fee_split | tax_rate_bps |
-|---|---:|---:|:---:|---:|
-| flap | 1000 | 8 | ✓ | 300 |
-| fourmeme | 0 | 1 | ✗ | 300 |
-| bfun | 1000 | 8 | ✓ | 300 |
-| basememe | 1000 | 9 | ✓ | 300 |
-| clanker | 2000 | 5 | ✓ | 100 |
-| doppler | 1000 | 5 | ✓ | 120 |
-| pumpfun | 0 | 1 | ✗ | 30 |
+| platform | chains | platform_fee_bps | max_fee_recipients | supports_fee_split | tax_rate_bps |
+|---|---|---:|---:|:---:|---:|
+| flap | bsc, robinhood | 1000 | 8 | ✓ | 300 |
+| fourmeme | bsc | 0 | 1 | ✗ | 300 |
+| bfun | bsc | 1000 | 8 | ✓ | 300 |
+| basememe | base | 1000 | 9 | ✓ | 300 |
+| clanker | base | 2000 | 5 | ✓ | 100 |
+| doppler | base, robinhood | 1000 | 5 | ✓ | 120 |
+| pumpfun | solana | 0 | 1 | ✗ | 30 |
+
+Fee economics are **chain-invariant** — a platform's fee split, tax, and recipient caps are the same on every chain it runs on (only the currency differs: Flap earns BNB on BSC and ETH on Robinhood). `chain_id` on this endpoint is informational and echoed back.
 
 ---
 
@@ -515,7 +531,9 @@ When `target_twitter_handle` is supplied:
 ### GET /token/{address}
 Get token info by address.
 
-Query: `?chain=base` (optional — searches all chains if omitted)
+Query: `?chain=base` | `bsc` | `solana` | `robinhood` (optional — searches all chains if omitted)
+
+> `chain` in the response can be any supported chain, including `"robinhood"`. For 4663 tokens the price/market-cap/volume fields are `null`/`0` — Robinhood isn't indexed by the market-data providers yet (see the Robinhood note under `POST /token/create`).
 
 Response:
 ```json
@@ -694,16 +712,25 @@ Response:
     "token_count": 4,
     "total_earnings_sol": 0.05,
     "total_claimable_sol": 0.012
+  },
+  "robinhood": {
+    "chain_id": 4663,
+    "token_count": 3,
+    "flap_total_earned_eth": 0.0042,
+    "doppler_claimable_weth_eth": "0.0010",
+    "doppler_claimable_token_usd": 0.75
   }
 }
 ```
+
+> Robinhood amounts are in **ETH** (its native token), tracked entirely separately from Base — they are never folded into the `base` block. Flap **auto-distributes** creator fees, so it reports a lifetime *earned* total and has no claimable; Doppler accrues *claimable* fees you collect at [kibi.bot/fees](https://kibi.bot/fees). The `robinhood` key was added after `bsc`/`base`/`solana` — older clients that don't know it can ignore it.
 
 ---
 
 ### GET /fees/earnings
 Get per-platform fee breakdown for a specific chain.
 
-Query: `?chain=bsc` | `?chain=base` | `?chain=solana`
+Query: `?chain=bsc` | `?chain=base` | `?chain=solana` | `?chain=robinhood`
 
 BSC response:
 ```json
@@ -731,6 +758,18 @@ Base response:
 
 > Each Base platform's claimable fees are returned in the response above. `claimable_weth_eth` is the WETH side; where a platform also accrues fees in the launched token, that side is surfaced as `claimable_token_usd` (USD-valued). Values are pre-computed (fast — no per-request on-chain call). Claiming is creator self-claim from your own wallet on the web app at [kibi.bot/fees](https://kibi.bot/fees) — there is no agent claim endpoint. Platform objects added in later API builds are omitted for older clients.
 
+Robinhood response:
+```json
+{
+  "chain": "robinhood",
+  "chain_id": 4663,
+  "flap": { "total_earned_eth": 0.0042, "earning_token_count": 2 },
+  "doppler": { "claimable_weth_eth": "0.0010", "claimable_token_usd": 0.75, "token_count": 1 }
+}
+```
+
+> Robinhood's Flap block uses **`total_earned_eth`**, not `total_earned_bnb` — the same platform is BNB-denominated on BSC and ETH-denominated on Robinhood. Read the ETH field on 4663; treating it as BNB would misprice it by orders of magnitude.
+
 Solana response:
 ```json
 {
@@ -747,11 +786,25 @@ Get fee earnings for a specific token.
 
 Query: `?chain=bsc&platform=flap&token_address=0x...`
 
-- `chain`: `bsc` | `base` | `solana`
-- `platform`: `flap` | `fourmeme` | `bfun` (BSC) · `pumpfun` (Solana)
+- `chain`: `bsc` | `base` | `solana` | `robinhood`
+- `platform`: `flap` | `fourmeme` | `bfun` (BSC) · `flap` (Robinhood) · `pumpfun` (Solana)
 - `token_address`: contract address (EVM) or mint address (Solana)
 
-> **Note:** `basememe` and `clanker` do not support per-token fee tracking — a helpful redirect message is returned instead.
+Valid chain/platform combinations: `bsc/flap`, `bsc/fourmeme`, `bsc/bfun`, `robinhood/flap`, `solana/pumpfun`. Anything else returns `400`.
+
+> **Note:** `basememe`, `clanker`, and `doppler` do not support per-token fee tracking — a helpful redirect message is returned instead (their fees are tracked per beneficiary across all pools, not per token).
+
+Robinhood/Flap response — note the ETH-denominated field:
+```json
+{
+  "token_address": "0x...",
+  "token_name": "MyToken",
+  "token_symbol": "MTK",
+  "platform": "flap",
+  "chain": "robinhood",
+  "earned_eth": 0.0031
+}
+```
 
 BSC/Flap response:
 ```json
@@ -810,6 +863,15 @@ Response:
       "trading_wallet_address": "0x..."
     },
     {
+      "chain": "robinhood",
+      "free_used_today": 0,
+      "free_limit": 3,
+      "sponsored_remaining": 3,
+      "can_create_paid": true,
+      "trading_wallet_balance": "0.004000 ETH",
+      "trading_wallet_address": "0x..."
+    },
+    {
       "chain": "solana",
       "free_used_today": 0,
       "free_limit": 3,
@@ -821,6 +883,8 @@ Response:
   ]
 }
 ```
+
+> Robinhood shares the same EVM trading wallet address as Base/BSC, but reports its **own on-chain ETH balance** — ETH on Base is not spendable on Robinhood. `/quota` is the place to check whether the wallet can self-pay a Robinhood launch once the free quota is used; `GET /balance/wallet` does not yet break out a Robinhood balance.
 
 ---
 
