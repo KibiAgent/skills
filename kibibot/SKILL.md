@@ -444,6 +444,14 @@ Pre-check errors:
 | `422` | Unrecognised platform name (`unknown_platform`), platform doesn't run on the requested chain (`platform_not_on_chain`), platform doesn't support fee split (`fee_split_not_supported`), more than `max_fee_recipients`, `sum(percent) > max_fee_percent`, sum is 0, or bad handle/address format |
 | `429` | Daily cap exceeded across all chains (`daily_cap_exceeded`) |
 
+> **A `202` is not a successful launch — it is an accepted job.** Always poll
+> `GET /jobs/{job_id}` until `status` is `completed` (with a `token_address`) or `failed`
+> (with an `error`). In particular, the follower pre-check above reads a **cached**
+> follower count so the request path stays fast, while the worker re-checks the **live**
+> count before deploying. A caller whose cached count is stale-high therefore gets a
+> `202` and then an asynchronous `failed` with `"Insufficient followers: 7/100"` — the
+> same rejection, just arriving later. Treat `202` as "queued", never as "deployed".
+
 ---
 
 ### GET /jobs/{job_id}
