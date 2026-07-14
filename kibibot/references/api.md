@@ -74,7 +74,7 @@ New `422` reasons: **unrecognised platform name (`unknown_platform`)**, **platfo
 
 - More than one entry → `422 fee_split_not_supported`.
 - Exactly one entry is allowed, but it must take the **full creator share (100%)**; it becomes the payout recipient. A single entry below 100% → `422 fee_split_not_supported`.
-- For a real split on Robinhood, use `doppler` (up to 5 recipients, ≤90% total).
+- For a real split on Robinhood, use `doppler` (up to 5 recipients, ≤83% total).
 
 ---
 
@@ -104,8 +104,8 @@ Fee economics are **not** chain-invariant — a platform's config can differ per
 | fourmeme | bsc | 0 | 10000 | 1 | ✗ | 300 | 100 |
 | bfun | bsc | 1000 | 9000 | 8 | ✓ | 300 | 90 |
 | basememe | base | 1000 | 9000 | 9 | ✓ | 300 | 90 |
-| clanker | base | 2000 | 8000 | 5 | ✓ | 100 | 80 |
-| doppler | base, robinhood | 1000 | 9000 | 5 | ✓ | 120 | 90 |
+| clanker | base | 1000 | 9000 | 5 | ✓ | 100 | 90 |
+| doppler | base, robinhood | 1667 | 8333 | 5 | ✓ | 120 | 83 |
 | pumpfun | solana | 0 | 10000 | 1 | ✗ | 30 | 100 |
 
 - `creator_fee_bps = 10000 - platform_fee_bps`

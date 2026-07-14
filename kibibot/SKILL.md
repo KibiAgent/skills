@@ -255,7 +255,7 @@ Create tokens on BSC, Robinhood, Base, or Solana — KibiBot handles wallet crea
 - "create $DOGE on BSC and send 30% of fees to @friend" — multi-recipient fee split
 - "launch a token on flap, give 40% of fees to 0xAAA… and 20% to @bob" — remainder routes back to you automatically
 - "create a basememe token and split fees: 40% to @alice and 20% to @bob" — Basememe now supports up to 9 recipients with a 3% trading tax (10% to Kibi, 90% to creators)
-- "launch a token on doppler on Base" — Doppler (Uniswap V4) launch, 1.2% swap fee, fee splits up to 5 recipients (creator 90% / Kibi 10%)
+- "launch a token on doppler on Base" — Doppler (Uniswap V4) launch, 1.2% swap fee, fee splits up to 5 recipients (creator 83.33% / Kibi 16.67%)
 - "launch a token on doppler on Robinhood" — Doppler also runs on Robinhood; Flap is the chain default, so name Doppler explicitly to use it. Doppler is the only way to split fees on Robinhood (up to 5 recipients)
 
 Token creation is async. After calling the API, poll the job status endpoint until complete (usually 30–60 seconds).
@@ -503,8 +503,8 @@ Reference values (read from API at runtime — **do not hard-code**):
 | fourmeme | bsc | 0 | 10000 | 1 | ✗ | 300 | 100 |
 | bfun | bsc | 1000 | 9000 | 8 | ✓ | 300 | 90 |
 | basememe | base | 1000 | 9000 | 9 | ✓ | 300 | 90 |
-| clanker | base | 2000 | 8000 | 5 | ✓ | 100 | 80 |
-| doppler | base, robinhood | 1000 | 9000 | 5 | ✓ | 120 | 90 |
+| clanker | base | 1000 | 9000 | 5 | ✓ | 100 | 90 |
+| doppler | base, robinhood | 1667 | 8333 | 5 | ✓ | 120 | 83 |
 | pumpfun | solana | 0 | 10000 | 1 | ✗ | 30 | 100 |
 
 Fee economics are **not** chain-invariant — a platform can run a different fee model on each chain it supports, so this table is keyed by `(platform, chain)` and so is the endpoint. **Flap on Robinhood is the case that bites:** it launches non-vault, so Kibi takes 0%, the creator keeps the entire creator pool, fee splitting is unavailable, and the trading tax is 1% — none of which matches Flap on BSC (10/90, 8 recipients, 3% tax). Doppler *is* the same on Base and Robinhood. Always pass `chain_id` and read the response back rather than assuming a platform's config carries across chains.
@@ -524,7 +524,7 @@ Fee economics are **not** chain-invariant — a platform can run a different fee
 
 - **More than one** entry → `422 fee_split_not_supported`.
 - **Exactly one** entry is allowed, but it must claim the **full creator share (100%)** — that recipient becomes the payout recipient. A single entry at less than 100% is also `422 fee_split_not_supported`.
-- Need a real split on Robinhood? Use `doppler` on `robinhood` instead — up to 5 recipients, ≤90% total.
+- Need a real split on Robinhood? Use `doppler` on `robinhood` instead — up to 5 recipients, ≤83% total.
 
 ---
 
@@ -806,9 +806,15 @@ Query: `?chain=bsc&platform=flap&token_address=0x...`
 - `platform`: `flap` | `fourmeme` | `bfun` (BSC) · `flap` (Robinhood) · `pumpfun` (Solana)
 - `token_address`: contract address (EVM) or mint address (Solana)
 
-Valid chain/platform combinations: `bsc/flap`, `bsc/fourmeme`, `bsc/bfun`, `robinhood/flap`, `solana/pumpfun`. Anything else returns `400`.
+Platforms with per-token fee tracking: `bsc/flap`, `bsc/fourmeme`, `bsc/bfun`, `robinhood/flap`, `solana/pumpfun`.
 
-> **Note:** `basememe`, `clanker`, and `doppler` do not support per-token fee tracking — a helpful redirect message is returned instead (their fees are tracked per beneficiary across all pools, not per token).
+> **Note:** `basememe`, `clanker`, and `doppler` do **not** support per-token fee tracking — their fees are tracked per beneficiary across all pools, not per token. Asking for one of them is **not an error**: the endpoint returns **`200`** with an explanatory body, so check the `supported` flag rather than the status code.
+>
+> ```json
+> { "platform": "doppler", "supported": false, "message": "Per-token fee tracking is not available for doppler: …" }
+> ```
+>
+> A token that exists but wasn't created by you returns `404 Token not found` — `/fees/token` only reports on your own tokens.
 
 BSC/Flap response:
 ```json
