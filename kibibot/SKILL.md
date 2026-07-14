@@ -406,7 +406,7 @@ Request:
 >
 > **Flap on Robinhood is a different fee model from Flap on BSC.** It launches non-vault: Kibi takes **0%**, the creator keeps **100%** of the creator pool, fee splitting is **not supported** (`supports_fee_split: false`, `max_fee_recipients: 1`), and the trading tax is **1%** (BSC Flap is 10/90 with 8 recipients and a 3% tax). Call `GET /token/platform-config?platform=flap&chain_id=4663` to read the real numbers — do not reuse the BSC config. Doppler behaves the same on Robinhood as on Base, so use `doppler` when you need a genuine multi-recipient split on 4663.
 >
-> Robinhood tokens **are** indexed: `price_usd` and `market_cap_usd` populate on `GET /token/{address}` for 4663 tokens (refreshed every few minutes). `volume_24h_usd` is `0` for a token that hasn't traded yet — that reflects real trading activity, not missing data.
+> Robinhood tokens **are** indexed: `price_usd` and `market_cap_usd` populate on `GET /token/{address}` for 4663 tokens (refreshed every few minutes — a freshly launched token already has both). `volume_24h_usd` is **`null`** for a token that hasn't traded yet — it is `null`, *not* `0`, so test for absence rather than comparing to zero. That reflects real trading activity, not missing coverage.
 
 **`FeeRecipient`**
 
@@ -552,7 +552,7 @@ Get token info by address.
 
 Query: `?chain=bsc` | `robinhood` | `base` | `solana` (optional — searches all chains if omitted)
 
-> `chain` in the response can be any supported chain, including `"robinhood"`. 4663 tokens **are** indexed: `price_usd` and `market_cap_usd` are populated and refreshed every few minutes. `volume_24h_usd` is `0` until the token actually trades — that's real trading activity, not a gap in coverage (see the Robinhood note under `POST /token/create`).
+> `chain` in the response can be any supported chain, including `"robinhood"`. 4663 tokens **are** indexed: `price_usd` and `market_cap_usd` are populated and refreshed every few minutes. `volume_24h_usd` is **`null`** until the token actually trades — `null`, *not* `0`, so test for absence rather than comparing to zero. That's real trading activity, not a gap in coverage (see the Robinhood note under `POST /token/create`).
 
 Response:
 ```json
