@@ -175,16 +175,18 @@ Requires: user has Agent Reload enabled at kibi.bot/credits + key has `reload_en
 
 ```json
 {
-  "evm_main":    { "address": "0x...", "balance_eth": "0.05", "balance_bnb": "0.1", "balance_usdc_base": "10.0", "balance_usdt_bsc": "5.0" },
-  "evm_trading": { "address": "0x...", "balance_eth": "0.01", "balance_bnb": "0.0", "balance_usdc_base": "0.0",  "balance_usdt_bsc": "0.0" },
+  "evm_main":    { "address": "0x...", "balance_eth": "0.05", "balance_bnb": "0.1", "balance_eth_robinhood": "0.004", "balance_usdc_base": "10.0", "balance_usdt_bsc": "5.0", "balance_usdg_robinhood": "25.0" },
+  "evm_trading": { "address": "0x...", "balance_eth": "0.01", "balance_bnb": "0.0", "balance_eth_robinhood": "0.001", "balance_usdc_base": "0.0",  "balance_usdt_bsc": "0.0", "balance_usdg_robinhood": "0.0" },
   "solana_main":    { "address": "...", "balance_sol": "0.5",  "balance_usdc_solana": "5.0" },
   "solana_trading": { "address": "...", "balance_sol": "0.05", "balance_usdc_solana": "0.0" }
 }
 ```
 
-Fields are `null` if wallet not set up or RPC unavailable. Check `*_error` fields.
+Fields are `null` if wallet not set up or RPC unavailable. Check `*_error` fields (incl. `eth_robinhood_error`, `usdg_robinhood_error`). A dead chain degrades only its own fields.
 
-`balance_eth` is **Base** ETH. This endpoint does not break out a Robinhood (4663) ETH balance — use `/quota` for that (Robinhood is a separate chain; Base ETH is not spendable on it).
+`balance_eth` is **Base** ETH; Robinhood (4663) ETH is `balance_eth_robinhood`. They are separate chains sharing a native symbol, and **Base ETH is not spendable on Robinhood** — do not read one as the other. Robinhood's stable is **USDG** (Paxos, 6 dec) as `balance_usdg_robinhood`, not USDC. The Robinhood fields are optional (added later than the others).
+
+`/quota` is the *spending-power* view (can the **trading** wallet self-pay a launch on a given chain); `/balance/wallet` is the *holdings* view (main **and** trading, incl. RH USDG).
 
 ---
 

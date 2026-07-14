@@ -7,7 +7,7 @@ description: Create tokens on-chain, check fee earnings, check Kibi Credit balan
 
 Create tokens on-chain, earn trading fees, manage your agent profile, and use KibiBot's Kibi LLM Gateway — all from natural language commands.
 
-**Version:** 1.10.0  
+**Version:** 1.11.0  
 **Provider:** [KibiBot](https://kibi.bot)  
 **Auth:** API key required — get yours at [kibi.bot/settings/api-keys](https://kibi.bot/settings/api-keys)  
 **Install:** `install the kibibot skill from https://github.com/KibiAgent/skills/tree/main/kibibot`
@@ -679,15 +679,19 @@ Response:
     "address": "0x...",
     "balance_eth": "0.050000",
     "balance_bnb": "0.100000",
+    "balance_eth_robinhood": "0.004000",
     "balance_usdc_base": "10.000000",
-    "balance_usdt_bsc": "5.000000"
+    "balance_usdt_bsc": "5.000000",
+    "balance_usdg_robinhood": "25.000000"
   },
   "evm_trading": {
     "address": "0x...",
     "balance_eth": "0.010000",
     "balance_bnb": "0.005000",
+    "balance_eth_robinhood": "0.001000",
     "balance_usdc_base": "0.000000",
-    "balance_usdt_bsc": "0.000000"
+    "balance_usdt_bsc": "0.000000",
+    "balance_usdg_robinhood": "0.000000"
   },
   "solana_main": {
     "address": "...",
@@ -702,7 +706,16 @@ Response:
 }
 ```
 
-Any field may be `null` if the wallet is not set up or the RPC is unavailable. Check `*_error` fields (e.g. `eth_error: "rpc_unavailable"`) for failure reasons.
+> **`balance_eth` is BASE ETH. Robinhood ETH is `balance_eth_robinhood`.** They are different
+> chains that happen to share a native symbol, and **Base ETH is not spendable on Robinhood** —
+> reading `balance_eth` as a Robinhood balance will tell a user they can fund an RH launch when
+> they cannot. Robinhood's stablecoin is **USDG** (Paxos "Global Dollar", 6 decimals) as
+> `balance_usdg_robinhood`, *not* USDC.
+>
+> The Robinhood fields are **optional** — they were added after `bsc`/`base`/`solana`, so a
+> client that predates them can ignore them.
+
+Any field may be `null` if the wallet is not set up or the RPC is unavailable. Check `*_error` fields (e.g. `eth_error`, `eth_robinhood_error`, `usdg_robinhood_error` → `"rpc_unavailable"`) for failure reasons. A dead chain degrades only its own fields; the rest of the response still returns.
 
 ---
 
@@ -916,7 +929,9 @@ Response:
 }
 ```
 
-> Entries are returned one per chain, in the order `bsc`, `robinhood`, `base`, `solana`. Robinhood shares the same EVM trading wallet address as Base/BSC, but reports its **own on-chain ETH balance** — ETH on Base is not spendable on Robinhood. `/quota` is the place to check whether the wallet can self-pay a Robinhood launch once the free quota is used; `GET /balance/wallet` does not break out a Robinhood balance. `trading_wallet_balance` and `trading_wallet_address` are strings, and may be `null`.
+> Entries are returned one per chain, in the order `bsc`, `robinhood`, `base`, `solana`. Robinhood shares the same EVM trading wallet address as Base/BSC, but reports its **own on-chain ETH balance** — ETH on Base is not spendable on Robinhood. `trading_wallet_balance` and `trading_wallet_address` are strings, and may be `null`.
+>
+> `/quota` answers *"can this **trading** wallet self-pay a launch on this chain?"* — it is the spending-power view. To see what a user actually **holds** (main *and* trading wallets, plus Robinhood USDG), use `GET /balance/wallet`, which reports `balance_eth_robinhood` and `balance_usdg_robinhood`.
 
 ---
 
